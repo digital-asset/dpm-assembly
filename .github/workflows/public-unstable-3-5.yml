@@ -33,7 +33,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - uses: ./.github/actions/nix
+
       - uses: ./.github/actions/gcloud-login
         with:
           key: ${{ secrets.DA_IMAGES }}
