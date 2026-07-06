@@ -24,7 +24,7 @@ env:
 
 jobs:
   oci-bundle:
-    runs-on: ubuntu-latest
+    runs-on: digital-asset-dpm-assembly
     outputs: 
       unstable_version: ${{ steps.versions2.outputs.unstable }}
       stable_version: ${{ steps.versions2.outputs.stable }}
@@ -34,15 +34,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install Nix
-        uses: NixOS/nix-installer-action@6b8548fe06acfb0155a50ab5d561accb215764cc
-        with:
-          extra-conf: |
-            experimental-features = nix-command flakes      
+      # - name: Install Nix
+      #   uses: NixOS/nix-installer-action@6b8548fe06acfb0155a50ab5d561accb215764cc
+      #   with:
+      #     extra-conf: |
+      #       experimental-features = nix-command flakes      
 
-      - name: Verify Nix installation
-        run: nix --version
-        shell: bash
+      # - name: Verify Nix installation
+      #   run: nix --version
+      #   shell: bash
       - uses: ./.github/actions/nix
       - uses: ./.github/actions/gcloud-login
         with:
