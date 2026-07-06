@@ -44,9 +44,9 @@ jobs:
         run: nix --version
         shell: bash
       - uses: ./.github/actions/nix
-      - uses: ./.github/actions/gcloud-login
-        with:
-          key: ${{ secrets.DA_IMAGES }}
+      # - uses: ./.github/actions/gcloud-login
+      #   with:
+      #     key: ${{ secrets.DA_IMAGES }}
       - name: Versions
         id: versions2
         uses: ./.github/actions/versions
@@ -66,12 +66,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Login to GAR
-        uses: docker/login-action@v3
-        with:
-          registry: europe-docker.pkg.dev
-          username: _json_key
-          password: ${{ secrets.DA_IMAGES }}
+      # - name: Login to GAR
+      #   uses: docker/login-action@v3
+      #   with:
+      #     registry: europe-docker.pkg.dev
+      #     username: _json_key
+      #     password: ${{ secrets.DA_IMAGES }}
       - uses: ./.github/actions/nix
 
       - name: Versions
@@ -102,12 +102,12 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ./.github/actions/nix
-      - name: Login to GAR
-        uses: docker/login-action@v3
-        with:
-          registry: europe-docker.pkg.dev
-          username: _json_key
-          password: ${{ secrets.DA_IMAGES }}
+      # - name: Login to GAR
+      #   uses: docker/login-action@v3
+      #   with:
+      #     registry: europe-docker.pkg.dev
+      #     username: _json_key
+      #     password: ${{ secrets.DA_IMAGES }}
 
 
       - name: Create temp writable directory
