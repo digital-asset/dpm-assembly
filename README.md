@@ -1,5 +1,6 @@
 # dpm-assembly
 
+Copyright (c) 2026 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved. SPDX-License-Identifier: Apache-2.0
 
 This repository assembles and releases the SDK, including the Daml Package Manager itself (dpm) and the vetted versions of the components specified within an assembly manifest.
 
