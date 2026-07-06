@@ -84,7 +84,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   docker-test:
-    runs-on: ubuntu-latest
+    runs-on: digital-asset-dpm-assembly
     needs:
       - docker
     steps:
