@@ -1,0 +1,6 @@
+.idea
+target
+dist/
+.direnv
+.DS_Store
+/test-results/report.xml

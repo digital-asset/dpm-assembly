@@ -1,0 +1,41 @@
+edition: open-source
+version: 3.4.12-snapshot
+components:
+  canton-enterprise:
+    image-tag: 3.4
+  codegen-java:
+    image-tag: 3.4
+  codegen-js:
+    image-tag: 3.4
+  daml-new:
+    image-tag: 3.4
+    platforms:
+      - linux/amd64
+      - linux/arm64
+      - darwin/amd64
+      - darwin/arm64
+      - windows/amd64
+  daml-script:
+    image-tag: 3.4
+  damlc:
+    image-tag: 3.4
+    platforms:
+      - linux/amd64
+      - linux/arm64
+      - darwin/amd64
+      - darwin/arm64
+      - windows/amd64
+  upgrade-check:
+    image-tag: 3.4
+  daml-shell:
+    image-tag: 3.4
+  scribe/daml3.4:
+    image-tag: 3.4
+assistant: # dpm binary
+  image-tag: main
+  platforms:
+    - windows/amd64
+    - linux/amd64
+    - linux/arm64
+    - darwin/amd64
+    - darwin/arm64

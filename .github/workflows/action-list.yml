@@ -1,0 +1,10 @@
+name: Lint Github Actions Workflows
+on: push
+jobs:
+  actionlint:
+    name: Lint Actions Yaml
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate workflows with actionlint
+        uses: raven-actions/actionlint@v2

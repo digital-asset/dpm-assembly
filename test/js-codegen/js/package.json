@@ -1,0 +1,22 @@
+{
+  "name": "main",
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "generate_api": "npx openapi-typescript openapi.yaml -o ./js-generated/api/ledger-api.d.ts",
+    "test": "node -r tsconfig-paths/register lib/index.js"
+  },
+  "description": "Testing package for dpm codegen-js",
+  "dependencies": {
+    "@daml.js/myproject-main-1.0.0": "file:./js-generated/myproject-main-1.0.0",
+    "@mojotech/json-type-validation": "^3.1.0",
+    "openapi-fetch": "^0.17.0",
+    "typescript": "^5.9.3",
+    "@daml/types": "__DAML_VERSION__"
+  },
+  "devDependencies": {
+    "tsconfig-paths": "^4.2.0"
+  }
+}

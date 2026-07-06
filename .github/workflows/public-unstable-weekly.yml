@@ -1,0 +1,81 @@
+name: public-unstable-weekly
+
+on:
+  pull_request:
+    paths:
+      - "latest/unstable/*-weekly.yaml"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail {0}"
+
+jobs:
+  oci-bundle:
+    if: contains(github.event.pull_request.labels.*.name, 'Weekly-Testing')
+
+    runs-on: dach-ny-dpm-assembly
+    outputs: 
+      version_tag: ${{ steps.uptick-latest.outputs.version_tag }}
+
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      READ_REGISTRY: 'europe-docker.pkg.dev/da-images/public-unstable'
+      READ_GHCR_REGISTRY_DPM: 'ghcr.io/digital-asset/temp/temp'
+      REGISTRY: 'europe-docker.pkg.dev/da-images/public-unstable'
+      PROJECT: 'da-images'
+      BUCKET: 'da-images-public-unstable'
+      DOMAIN: 'get.digitalasset.com'
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/nix
+      - uses: ./.github/actions/gcloud-login
+        with:
+          key: ${{ secrets.DA_IMAGES }}
+      - name: Uptick LATEST
+        id: uptick-latest
+        run: |
+          minor=$(cat weekly-testing/VERSION)
+          echo "$minor.0-weekly" > VERSION
+          echo "weekly_minor=$minor" >> "$GITHUB_OUTPUT"
+          echo "version_tag=$minor.0-weekly" >> "$GITHUB_OUTPUT"
+      - id: get-weekly-release-tag
+        run: |
+          weekly_version=$(gh api --jq '.labels.[].name|select(startswith("tag-weekly-"))|.[11:]' /repos/DACH-NY/dpm-assembly/pulls/${{ github.event.number }})
+          echo "weekly_version=$weekly_version" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ secrets.AUTO_REBASE_PAT }}
+      - id: release-unstable
+        uses: ./.github/actions/release-unstable
+        with:
+          manifest: "latest/unstable/${{ steps.uptick-latest.outputs.weekly_minor }}-weekly.yaml"
+          extra-tags: --extra-tags="${{ steps.get-weekly-release-tag.outputs.weekly_version }}" --extra-tags="${{ github.ref_name }}"
+      - uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # Use the comment action
+        with:
+          message: |
+            ## Unstable release created: ${{ steps.release-unstable.outputs.version }}
+            ### Linux/Macos install:
+            Run:
+            ```
+            curl -sSL https://get.digitalasset.com/install/install.sh | sh -s "${{ steps.release-unstable.outputs.version }}"
+            ```
+            ### Windows install:
+            Download and run installer:
+
+            https://get.digitalasset.com/unstable/install/dpm-sdk/dpm-${{ steps.release-unstable.outputs.version }}-windows-amd64.exe
+          github-token: ${{ secrets.AUTO_REBASE_PAT }}
+  test-release:
+    uses: ./.github/workflows/test-release.yml
+    needs:
+      - oci-bundle
+    with:
+      registry: europe-docker.pkg.dev/da-images/public-unstable
+      version-tag: ${{ needs.oci-bundle.outputs.version_tag }}
