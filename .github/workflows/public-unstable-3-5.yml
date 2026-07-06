@@ -24,7 +24,7 @@ env:
 
 jobs:
   oci-bundle:
-    runs-on: dach-ny-dpm-assembly
+    runs-on: ubuntu-latest
     outputs: 
       unstable_version: ${{ steps.versions2.outputs.unstable }}
       stable_version: ${{ steps.versions2.outputs.stable }}
@@ -46,7 +46,7 @@ jobs:
           extra-tags: --extra-tags="${{ github.ref_name }}"
           
   docker:
-    runs-on: dach-ny-dpm-assembly
+    runs-on: ubuntu-latest
     needs:
       - oci-bundle
     outputs:
@@ -84,7 +84,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
 
   docker-test:
-    runs-on: dach-ny-dpm-assembly
+    runs-on: ubuntu-latest
     needs:
       - docker
     steps:
