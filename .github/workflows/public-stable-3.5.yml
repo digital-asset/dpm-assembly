@@ -14,7 +14,7 @@ defaults:
 
 jobs:
   oci-bundle:
-    runs-on: dach-ny-dpm-assembly
+    runs-on: digital-asset-dpm-assembly
     env:
       READ_REGISTRY: 'europe-docker.pkg.dev/da-images/public-all'
       READ_GHCR_REGISTRY_DPM: 'ghcr.io/digital-asset/temp'
@@ -101,7 +101,7 @@ jobs:
               - Follow [installation instructions](https://docs.digitalasset.com/build/3.5/dpm/dpm.html#installation-instructions)          
 
   docker:
-    runs-on: dach-ny-dpm-assembly
+    runs-on: digital-asset-dpm-assembly
     needs:
       - oci-bundle
     steps:

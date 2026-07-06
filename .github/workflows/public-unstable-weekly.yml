@@ -17,7 +17,7 @@ jobs:
   oci-bundle:
     if: contains(github.event.pull_request.labels.*.name, 'Weekly-Testing')
 
-    runs-on: dach-ny-dpm-assembly
+    runs-on: digital-asset-dpm-assembly
     outputs: 
       version_tag: ${{ steps.uptick-latest.outputs.version_tag }}
 

@@ -11,7 +11,7 @@ on:
 
 jobs:
   test-bundle-linux:
-    runs-on: dach-ny-dpm-assembly
+    runs-on: digital-asset-dpm-assembly
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v6
