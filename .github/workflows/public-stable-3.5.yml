@@ -1,0 +1,215 @@
+name: public-stable
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - latest/open-source/3.5.yaml
+
+defaults:
+  run:
+    shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail {0}"
+
+
+jobs:
+  oci-bundle:
+    runs-on: digital-asset-dpm-assembly
+    env:
+      READ_REGISTRY: 'europe-docker.pkg.dev/da-images/public-all'
+      READ_GHCR_REGISTRY_DPM: 'ghcr.io/digital-asset/temp'
+      REGISTRY: 'europe-docker.pkg.dev/da-images/public'
+      PROJECT: 'da-images'
+      BUCKET: 'da-images-public'
+      DOMAIN: 'get.digitalasset.com'
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/nix
+      - uses: ./.github/actions/gcloud-login
+        with:
+          key: ${{ secrets.DA_IMAGES }}
+      - name: 'download dpm'
+        run: |
+          echo "::group::Starting dpm installation"
+          ./.github/get-dpm.sh "${READ_REGISTRY}" latest
+          echo "::endgroup::"
+      - name: 'install nsis'
+        run: |
+          echo "::group::Starting nsis installation"
+          sudo apt update && sudo apt install -y nsis
+          echo "::endgroup::"
+      - run: echo "DPM_ASSEMBLY_RUN_NUMBER=${GITHUB_RUN_NUMBER}" >> "${GITHUB_ENV}"
+      - name: Versions
+        id: versions
+        uses: ./.github/actions/versions
+      - name: 'publish open source dpm-sdk'
+        run:  |
+          echo "::group::Starting bundle build and release"
+          VERSION=${{ steps.versions.outputs.stable }} ./open-source-dpm-sdk.sh
+          echo "::endgroup::"
+      - name: 'test install via public domain'
+        run: |
+          echo "::group::Starting test installation"
+          ./test-open-source-install-script.sh
+          echo "::endgroup::"
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+        shell: bash -euo pipefail -c "source nix.source && exec bash {0}"
+      - name: Create tag
+        run: |
+          git tag ${{ steps.versions.outputs.stable }}
+          git push origin ${{ steps.versions.outputs.stable }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash -euo pipefail -c "source nix.source && exec bash {0}"
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2.5.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.versions.outputs.stable }}
+          name: SDK ${{ steps.versions.outputs.stable }}
+          prerelease: 'false'
+          draft: 'false'
+          body: |
+            ## What's Changed
+            
+            Just published ${{ steps.versions.outputs.stable }} SDK
+            
+            Bundles:
+              - [OSX arm64 tarball](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-darwin-arm64.tar.gz)
+              - [OSX amd64 tarball](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-darwin-amd64.tar.gz)
+              - [Linux arm64 tarball](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-linux-arm64.tar.gz)
+              - [Linux amd64 tarball](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-linux-amd64.tar.gz)
+              - [Windows amd64 exe](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-windows-amd64.exe)
+              - [Windows amd64 zip](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-windows-amd64.zip)
+            
+            Components:
+              - [${{ steps.versions.outputs.stable }} bundled release versions](https://github.com/DACH-NY/dpm-assembly/blob/main/latest/open-source/3.5.yaml)
+              - Canton
+              - Daml (includes damlc, codegen, etc)
+              - Scribe
+              - Shell
+              - Dpm
+            
+            For installation:
+              - Follow [installation instructions](https://docs.digitalasset.com/build/3.5/dpm/dpm.html#installation-instructions)          
+
+  docker:
+    runs-on: digital-asset-dpm-assembly
+    needs:
+      - oci-bundle
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Login to GAR
+        uses: docker/login-action@v3
+        with:
+          registry: europe-docker.pkg.dev
+          username: _json_key
+          password: ${{ secrets.DA_IMAGES }}
+
+      - name: Versions
+        id: versions
+        uses: ./.github/actions/versions
+
+      - name: Docker Tags
+        id: tags
+        uses:  ./.github/actions/docker-tags
+        with:
+          name: "sdk"
+
+      - name: Docker Build and Publish
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          build-args: VERSION=${{ steps.versions.outputs.stable }}
+          tags: ${{ steps.tags.outputs.tags }}
+          platforms: linux/amd64,linux/arm64
+
+  test-windows-installer:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    needs:
+      - oci-bundle
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - run: echo "DPM_HOME=${RUNNER_TEMP}" >> "${GITHUB_ENV}"
+        shell: bash
+      - name: Download latest dpm windows exe
+        run: |
+          echo "Determining latest SDK tarball link..."
+
+          declare TARBALL_URL
+          declare EXECUTABLE
+          TARBALL_URL="$(curl -s https://get.digitalasset.com/install/latest-windows.html | grep -oE 'https://[^ ]+\.exe')"
+          EXECUTABLE="${RUNNER_TEMP}/dpm-${VERSION}-windows-amd64.exe"
+
+          if [ -z "${TARBALL_URL}" ] ; then
+            echo "Failed to determine latest SDK download link."
+            exit 1
+          fi
+          echo "Latest SDK version tarball link is ${TARBALL_URL}"
+
+          curl -o "${EXECUTABLE}" "${TARBALL_URL}"
+        shell: bash
+      - name: run installer
+        run: |
+          cmd /c "for %F in (%RUNNER_TEMP%\\*windows-amd64*.exe) do %F /S"
+        shell: powershell
+      - name: verify installation
+        run: '%DPM_HOME%\\bin\\dpm.cmd version'
+        shell: cmd
+
+  test-windows-archive-installation:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    needs:
+      - oci-bundle
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: echo "DPM_HOME=${RUNNER_TEMP}" >> "${GITHUB_ENV}"
+        shell: bash
+      - name: Download latest dpm windows archive
+        run: |
+          echo "Determining latest SDK tarball link..."
+
+          declare ZIP_URL
+          declare ZIP_PATH
+          
+          ZIP_URL="$(curl -s https://get.digitalasset.com/install/latest-windows-archive.html | grep -oE 'https://[^ ]+\.zip')"
+          ZIP_PATH="${RUNNER_TEMP}/dpm-windows-amd64.zip"
+
+          if [ -z "${ZIP_URL}" ] ; then
+            echo "Failed to determine latest SDK download link."
+            exit 1
+          fi
+          echo "Latest SDK version tarball link is ${ZIP_URL}"
+
+          curl -o "${ZIP_PATH}" "${ZIP_URL}"
+        shell: bash
+      - name: install archive
+        run: |
+          $ZIP_PATH = "$env:RUNNER_TEMP/dpm-windows-amd64.zip"
+          $EXTRACTED = Join-Path "$env:TEMP" "extracted"
+          New-Item -ItemType Directory -Path $EXTRACTED | Out-Null
+          Expand-Archive -Path $ZIP_PATH -DestinationPath $EXTRACTED
+
+          & "$EXTRACTED\windows-amd64\bin\dpm.exe" bootstrap $EXTRACTED\windows-amd64
+        shell: powershell
+      - name: verify installation
+        run: '%DPM_HOME%\\bin\\dpm.cmd version'
+        shell: cmd
+
+# notify_slack TODO

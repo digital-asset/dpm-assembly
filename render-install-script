@@ -1,0 +1,17 @@
+#! /usr/bin/env bash
+set -euo pipefail
+
+config="$(cat <<EOF
+
+DPM_DOMAIN="${2}"
+GOOGLE_PROJECT="${3}"
+
+EOF
+)"
+
+
+d="install-scripts"
+cat "${d}/template/header.sh" \
+   <(echo "${config}") \
+   "${d}/${1}.sh" \
+   "${d}/template/body.sh"
