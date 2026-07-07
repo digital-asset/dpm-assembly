@@ -26,7 +26,7 @@ jobs:
 
       - id: get-weekly-release-tag
         run: |
-          weekly_version=$(gh api --jq '.labels.[].name|select(startswith("tag-weekly-"))|.[11:]' /repos/DACH-NY/dpm-assembly/pulls/${{ github.event.number }})
+          weekly_version=$(gh api --jq '.labels.[].name|select(startswith("tag-weekly-"))|.[11:]' /repos/digital-asset/dpm-assembly/pulls/${{ github.event.number }})
           echo "weekly_version=$weekly_version" >> "$GITHUB_OUTPUT"
         env:
           GH_TOKEN: ${{ secrets.AUTO_REBASE_PAT }}
