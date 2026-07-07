@@ -75,8 +75,12 @@ title "Building rotation commit"
 git add weekly-testing/rotation
 git commit -m "Rotate weekly testing duty"
 
-title "Pushing rotation commit"
 
+title "inspect for debug"
+
+git status
+
+title "Pushing rotation commit"
 git push origin $branch
 
 title "Building rotation commit"
