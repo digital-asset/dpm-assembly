@@ -33,7 +33,7 @@ jobs:
       DOMAIN: 'get.digitalasset.com'
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 0
       - uses: ./.github/actions/nix
@@ -58,7 +58,7 @@ jobs:
         with:
           manifest: "latest/unstable/${{ steps.uptick-latest.outputs.weekly_minor }}-weekly.yaml"
           extra-tags: --extra-tags="${{ steps.get-weekly-release-tag.outputs.weekly_version }}" --extra-tags="${{ github.ref_name }}"
-      - uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # Use the comment action
+      - uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3.0.1
         with:
           message: |
             ## Unstable release created: ${{ steps.release-unstable.outputs.version }}
