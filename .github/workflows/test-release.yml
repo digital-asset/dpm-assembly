@@ -14,7 +14,7 @@ jobs:
     runs-on: digital-asset-dpm-assembly
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 0
       - uses: ./.github/actions/nix
@@ -37,7 +37,7 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 0
       - name: Install newer bash
@@ -68,7 +68,7 @@ jobs:
       ORAS_VERSION: 1.3.0
       BATS_SHA: 713504bc0224a19b3d7c7958c18dc07f64f54b44 # 1.12.0 - matching the nix/bats.nix derivation version
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 0
       # Nix.source is required on macos and linux, avoid conditional logic everywhere by faking one for windows.

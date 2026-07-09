@@ -24,7 +24,7 @@ jobs:
       DOMAIN: 'get.digitalasset.com'
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 0
       - uses: ./.github/actions/nix
@@ -68,7 +68,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash -euo pipefail -c "source nix.source && exec bash {0}"
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2.5.0
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -105,11 +105,11 @@ jobs:
     needs:
       - oci-bundle
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 0
       - name: Login to GAR
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3
         with:
           registry: europe-docker.pkg.dev
           username: _json_key
@@ -126,7 +126,7 @@ jobs:
           name: "sdk"
 
       - name: Docker Build and Publish
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6
         with:
           context: .
           push: true
@@ -140,7 +140,7 @@ jobs:
     needs:
       - oci-bundle
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           fetch-depth: 0
       - run: echo "DPM_HOME=${RUNNER_TEMP}" >> "${GITHUB_ENV}"
@@ -176,7 +176,7 @@ jobs:
     needs:
       - oci-bundle
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           fetch-depth: 0
       - run: echo "DPM_HOME=${RUNNER_TEMP}" >> "${GITHUB_ENV}"
