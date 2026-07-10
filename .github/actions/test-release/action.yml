@@ -59,7 +59,7 @@ runs:
       shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail $0" "{0}"
 
     - name: Test Report
-      uses: dorny/test-reporter@v2.3.0
+      uses: dorny/test-reporter@fe45e9537387dac839af0d33ba56eed8e24189e8 # v2.3.0
       with:
         name: docker tests
         path: ${{ runner.temp }}/test-output/*.xml
