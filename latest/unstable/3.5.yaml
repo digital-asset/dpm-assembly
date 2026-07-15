@@ -1,0 +1,39 @@
+edition: open-source
+version: 3.5.3-snapshot
+components:
+  canton-open-source:
+    image-tag: 3.5
+  codegen:
+    image-tag: 3.5
+  daml-new:
+    image-tag: 3.5
+    platforms:
+      - linux/amd64
+      - linux/arm64
+      - darwin/amd64
+      - darwin/arm64
+      - windows/amd64
+  daml-script:
+    image-tag: 3.5
+  damlc:
+    image-tag: 3.5
+    platforms:
+      - linux/amd64
+      - linux/arm64
+      - darwin/amd64
+      - darwin/arm64
+      - windows/amd64
+  upgrade-check:
+    image-tag: 3.5
+  daml-shell:
+    image-tag: 3.5
+  scribe:
+    image-tag: 3.5
+assistant: # dpm binary
+  image-tag: main
+  platforms:
+    - windows/amd64
+    - linux/amd64
+    - linux/arm64
+    - darwin/amd64
+    - darwin/arm64

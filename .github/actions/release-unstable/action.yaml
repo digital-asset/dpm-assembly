@@ -1,0 +1,42 @@
+name: Unstable Release
+description: Unstable Release
+
+inputs:
+  manifest:
+    description: path to dpm manifest file
+    required: true
+  extra-tags:
+    description: extra tags to attach to release, space separated
+
+outputs:
+  version:
+    description: "Published artifact version"
+    value: ${{ steps.publish-oci.outputs.version }}
+
+runs:
+  using: composite
+  steps:
+    - name: 'download dpm'
+      run: |
+        echo "::group::Starting dpm installation"
+        ./.github/get-dpm.sh "${REGISTRY}" main
+        echo "::endgroup::"
+      shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail {0}"
+    - name: 'install nsis'
+      run: |
+        echo "::group::Starting nsis installation"
+        sudo apt update && sudo apt install -y nsis
+        echo "::endgroup::"
+      shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail {0}"
+    - run: echo "DPM_ASSEMBLY_RUN_NUMBER=${GITHUB_RUN_NUMBER}" >> "${GITHUB_ENV}"
+      shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail {0}"
+    - name: Versions
+      id: versions
+      uses: ./.github/actions/versions
+    - name: 'publish unstable dpm-sdk'
+      id: publish-oci
+      run: |
+        echo "::group::Starting VERSION=${{ steps.versions.outputs.unstable}} bundle build and publish"
+        VERSION=${{ steps.versions.outputs.unstable }} MANIFEST=${{ inputs.manifest }} ./unstable-dpm-sdk.sh ${{ inputs.extra-tags }}
+        echo "::endgroup::"
+      shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail {0}"

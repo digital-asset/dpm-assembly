@@ -1,0 +1,40 @@
+# Stable 3.5 release
+edition: open-source
+version: 3.5.2
+components:
+  canton-open-source:
+    version: 3.5.6
+  codegen:
+    version: 3.5.2
+  daml-new:
+    version: 3.5.2
+    platforms:
+      - linux/amd64
+      - linux/arm64
+      - darwin/amd64
+      - darwin/arm64
+      - windows/amd64
+  daml-shell:
+    version: 3.5.1
+  daml-script:
+    version: 3.5.2
+  damlc:
+    version: 3.5.2
+    platforms:
+      - linux/amd64
+      - linux/arm64
+      - darwin/amd64
+      - darwin/arm64
+      - windows/amd64
+  scribe:
+    version: 3.5.2
+  upgrade-check:
+    version: 3.5.2
+assistant:
+  version: 1.0.21
+  platforms:
+    - windows/amd64
+    - linux/amd64
+    - linux/arm64
+    - darwin/amd64
+    - darwin/arm64

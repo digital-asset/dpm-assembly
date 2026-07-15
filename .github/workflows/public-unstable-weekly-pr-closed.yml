@@ -1,0 +1,44 @@
+name: public-unstable-weekly-pr-closed
+
+on:
+  pull_request:
+    paths:
+      - "latest/unstable/*-weekly.yaml"
+    types: [closed]
+
+defaults:
+  run:
+    shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail {0}"
+
+jobs:
+  weekly-testing-cleanup:
+    if: contains(github.event.pull_request.labels.*.name, 'Weekly-Testing')
+    runs-on: digital-asset-dpm-assembly
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/nix
+      - uses: ./.github/actions/gcloud-login
+        with:
+          key: ${{ secrets.DA_IMAGES }}
+
+      - id: get-weekly-release-tag
+        run: |
+          weekly_version=$(gh api --jq '.labels.[].name|select(startswith("tag-weekly-"))|.[11:]' /repos/digital-asset/dpm-assembly/pulls/${{ github.event.number }})
+          echo "weekly_version=$weekly_version" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ secrets.AUTO_REBASE_PAT }}
+      - name: Add unstable version tag
+        if: github.event.pull_request.merged && steps.get-weekly-release-tag.outputs.weekly_version != ''
+        run: |
+          new_tag="latest-$(cat weekly-testing/VERSION)-weekly-tested"
+          version="${{ steps.get-weekly-release-tag.outputs.weekly_version }}"
+          oras tag "europe-docker.pkg.dev/da-images/public-unstable/sdk-manifests/open-source:$version" "$new_tag"
+      - name: Cleanup label
+        if: steps.get-weekly-release-tag.outputs.weekly_version != ''
+        run: |
+          gh label delete "tag-weekly-${{ steps.get-weekly-release-tag.outputs.weekly_version }}" --yes
+        env:
+          GH_TOKEN: ${{ secrets.AUTO_REBASE_PAT }}

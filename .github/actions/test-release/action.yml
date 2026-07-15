@@ -1,0 +1,68 @@
+name: Test Release
+description: Test release component compatibility and backwards compatibility
+
+inputs:
+  version:
+    description: Version to test
+    required: true
+  registry:
+    description: Registry containing version to test. Compatibility versions always pulled from stable
+    required: true
+
+env:
+  DPM_EDITION: 'open-source'
+  DPM_REGISTRY: 'europe-docker.pkg.dev/da-images/public'
+
+runs:
+  using: composite
+  steps:
+    - name: 'download main dpm'
+      run: |
+        # Install main dpm globally
+        . ./.github/get-assembly-dpm.sh "${{ inputs.registry }}" "${{ inputs.version }}"
+        DPM_REGISTRY=${{ inputs.registry }} dpm install ${{ inputs.version }}
+      shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail $0" "{0}"
+      # Currently unused, will be used by compatibility tests once they are written
+      # Installs latest patch of each minor, and previous patch of current minor
+    - name: 'download older versions'
+      run: |
+        versions_json=$(dpm versions --all --output json)
+        # Parse all x.y.z versions into {major, minor, patch} objects, discarding all snapshots
+        version_objects=$(echo $versions_json | jq 'map(.version | match("^(\\d+)\\.(\\d+)\\.(\\d+)$").captures | map(.string) | {major: .[0], minor: .[1], patch: .[2]})')
+        test_version=${{ inputs.version }}
+        major=$(echo $test_version | cut -d. -f 1)
+        minor=$(echo $test_version | cut -d. -f 2)
+        # Remove all versions from different major, and from newer minor
+        # Note that we include current minor, to test against previous patch
+        filtered_version_objects=$(echo $version_objects | MAJOR=$major MINOR=$minor jq 'map(select(.major == env.MAJOR and (.minor|tonumber) <= env.MINOR))')
+        # Find the maximum patch version for each minor
+        compatible_version_objects=$(echo $filtered_version_objects | jq 'group_by(.minor) | map(max_by(.patch|tonumber))[]')
+        # Convert back from object to string
+        compatible_versions=$(echo $compatible_version_objects | jq --raw-output '.major + "." + .minor + "." + .patch')
+
+        echo "$compatible_versions" | tr -d '\r' | while IFS= read -r install_version; do
+          dpm install $install_version
+        done
+
+        dpm versions
+      shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail $0" "{0}"
+
+    - name: Create test output directory
+      run: |
+        mkdir -p "$RUNNER_TEMP/test-output"
+        echo "Temp dir: $RUNNER_TEMP/test-output"
+      shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail $0" "{0}"
+
+    - name: Run integration tests
+      run: |
+        VERSION=${{ inputs.version }} bats ./test/sdk-integration.bats --report-formatter junit --output "${RUNNER_TEMP}/test-output"
+      shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail $0" "{0}"
+
+    - name: Test Report
+      uses: dorny/test-reporter@fe45e9537387dac839af0d33ba56eed8e24189e8 # v2.3.0
+      with:
+        name: docker tests
+        path: ${{ runner.temp }}/test-output/*.xml
+        reporter: java-junit
+        fail-on-empty: false
+        max-annotations: 0 # This uses `git ls-files` which windows doesn't like

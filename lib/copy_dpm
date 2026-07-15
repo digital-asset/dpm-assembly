@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Copyright 2026 Copyright (c) 2026 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+set -euo pipefail
+
+src_registry="${1}"
+dest_registry="${2}"
+manifest="${3}"
+
+repo_name="components/dpm"
+tag="$(yq '.assistant.version // .assistant.image-tag' "${manifest}")"
+src_image="${src_registry}/${repo_name}:${tag}"
+
+version=$(oras manifest fetch "${src_image}" | jq -r '.annotations["org.opencontainers.image.version"]')
+
+set -x
+oras cp "${src_registry}/${repo_name}:${tag}" "${dest_registry}/${repo_name}:${tag},${version}"
+set +x
