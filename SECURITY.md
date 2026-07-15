@@ -10,7 +10,7 @@ https://docs.canton.network/release-notes#release-notes
 
 If you suspect that your issue has a security impact, do not use the issue tracker.
 In that case, please follow our responsible disclosure policy:
-https://www.digitalasset.com/responsible-disclosure
+https://www.digitalasset.com/responsible-disclosure and raise the Security Issue via the [Security and Quality](https://github.com/digital-asset/dpm-assembly/security/advisories/new) tab
 
 To report an issue that does not have a security impact, open an issue on GitHub:
 https://github.com/digital-asset/dpm-assembly/issues/new
