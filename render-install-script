@@ -1,4 +1,7 @@
 #! /usr/bin/env bash
+# Copyright 2026 Copyright (c) 2026 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 set -euo pipefail
 
 config="$(cat <<EOF

@@ -1,4 +1,7 @@
 #!/usr/bin/env bats
+# Copyright 2026 Copyright (c) 2026 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 version="${VERSION:-"3.5.2"}"
 image_name="europe-docker.pkg.dev/da-images/public-all/docker/sdk:${version}"
 cmd="docker run --read-only --rm $image_name"
