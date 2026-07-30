@@ -1,9 +1,9 @@
 # Stable 3.5 release
 edition: open-source
-version: 3.5.3
+version: 3.5.4
 components:
   canton-open-source:
-    version: 3.5.10
+    version: 3.5.11
   codegen:
     version: 3.5.2
   daml-new:
@@ -27,7 +27,7 @@ components:
       - darwin/arm64
       - windows/amd64
   scribe:
-    version: 3.5.5
+    version: 3.5.7
   upgrade-check:
     version: 3.5.2
 assistant:
