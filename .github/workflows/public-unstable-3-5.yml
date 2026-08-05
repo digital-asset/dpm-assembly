@@ -239,3 +239,51 @@ jobs:
           component: components/dpm
           version: 1.0.21
           tag: latest
+
+      - name: update tags for sdk devnet
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: sdk-manifests/open-source
+          version: 3.5.3
+          tag: devnet
+
+      - name: update tags for sdk testnet
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: sdk-manifests/open-source
+          version: 3.5.3
+          tag: testnet
+
+      - name: update tags for sdk mainnet
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: sdk-manifests/open-source
+          version: 3.5.2
+          tag: mainnet
+
+      - name: update tags for canton devnet
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: components/canton-open-source
+          version: 3.5.11
+          tag: devnet
+
+      - name: update tags for sdk testnet
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: components/canton-open-source
+          version: 3.5.10
+          tag: testnet
+
+      - name: update tags for sdk mainnet
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: components/canton-open-source
+          version: 3.5.9
+          tag: mainnet
