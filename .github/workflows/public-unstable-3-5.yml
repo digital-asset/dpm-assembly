@@ -339,7 +339,7 @@ jobs:
         with:
           artifacts: '["components/codegen"]'
           version: 3.5.2
-          tags: '["3.5", "devnet","testnet","mainnet"]'
+          tags: '["3.5","devnet","testnet","mainnet"]'
 
       # darsyncer
       - name: update tags for darsyncer (all)
@@ -350,7 +350,7 @@ jobs:
           tags: '["devnet","testnet","mainnet"]'
 
       # darsyncer
-      - name: update tags for darsyncer (all)
+      - name: update tags for covalidation service (all)
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["docker/covalidation-service"]'
@@ -358,7 +358,7 @@ jobs:
           tags: '["latest","devnet","testnet","mainnet"]'
 
       # cometbft
-      - name: update tags for darsyncer (all)
+      - name: update tags for cometbft (all)
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["docker/cometbft-canton-network"]'
