@@ -24,7 +24,7 @@ runs:
       run: |
         component_with_version=${{ inputs.registry }}/${{ inputs.component }}:${{ inputs.version }}
         echo '${{ inputs.tags }}' | jq -r '.[]' | while read -r tag; do
-          echo "Tagging $component:$tag"
+          echo "Tagging $component_with_version"
           oras tag --concurrency 1 "$component_with_version"  "$tag"
         done        
 
