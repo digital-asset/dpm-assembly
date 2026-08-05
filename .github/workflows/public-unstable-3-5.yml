@@ -289,7 +289,7 @@ jobs:
       - name: update tags for pqs (all)
         uses: ./.github/actions/update-tags
         with:
-          artifacts: '["components/scribe", "docker/participant-query-store", "charts/participant-query-store"]'
+          artifacts: '["components/scribe", "docker/participant-query-store", "docker/scribe", "charts/participant-query-store"]'
           version: 3.5.7
           tags: '["3.5","devnet","testnet","mainnet"]'
 
@@ -340,3 +340,27 @@ jobs:
           artifacts: '["components/codegen"]'
           version: 3.5.2
           tags: '["3.5", "devnet","testnet","mainnet"]'
+
+      # darsyncer
+      - name: update tags for darsyncer (all)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["docker/darsyncer"]'
+          version: 2.9.7
+          tags: '["devnet","testnet","mainnet"]'
+
+      # darsyncer
+      - name: update tags for darsyncer (all)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["docker/covalidation-service"]'
+          version: 0.7.4
+          tags: '["latest","devnet","testnet","mainnet"]'
+
+      # cometbft
+      - name: update tags for darsyncer (all)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["docker/cometbft-canton-network"]'
+          version: "3.5.0-snapshot.20260203.17930.0.v8a849517-stable-20260204"
+          tags: '["devnet","testnet","mainnet"]'
