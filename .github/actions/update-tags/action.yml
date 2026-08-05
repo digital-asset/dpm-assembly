@@ -15,7 +15,6 @@ inputs:
   tags:
     description: Tags to update as JSON array
     required: true
-    default: '["devnet","testnet","mainnet"]'
 
 runs:
   using: composite
