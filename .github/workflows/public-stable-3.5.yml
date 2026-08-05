@@ -227,7 +227,7 @@ jobs:
       - name: update tags for dpm
         uses: ./.github/actions/update-tags
         with:
-          component: components/dpm
+          component: '["components/dpm"]'
           version: 1.0.21
           tags: '["latest","devnet","testnet","mainnet"]'
 
@@ -295,7 +295,7 @@ jobs:
       - name: update tags for damlc (all)
         uses: ./.github/actions/update-tags
         with:
-          component: components/damlc
+          component: '["components/damlc"]'
           version: 3.5.2
           tags: '["3.5","devnet","testnet","mainnet"]'
 
@@ -303,7 +303,7 @@ jobs:
       - name: update tags for upgrade-check (all)
         uses: ./.github/actions/update-tags
         with:
-          component: components/upgrade-check
+          component: '["components/upgrade-check"]'
           version: 3.5.2
           tags: '["3.5","devnet","testnet","mainnet"]'
 
@@ -311,7 +311,7 @@ jobs:
       - name: update tags for daml-script (all)
         uses: ./.github/actions/update-tags
         with:
-          component: components/daml-script
+          component: '["components/daml-script"]'
           version: 3.5.2
           tags: '["3.5","devnet","testnet","mainnet"]'
 
@@ -319,7 +319,7 @@ jobs:
       - name: update tags for daml-new (all)
         uses: ./.github/actions/update-tags
         with:
-          component: components/daml-new
+          component: '["components/daml-new"]'
           version: 3.5.2
           tags: '["3.5","devnet","testnet","mainnet"]'
 
@@ -327,6 +327,6 @@ jobs:
       - name: update tags for codegen (all)
         uses: ./.github/actions/update-tags
         with:
-          component: components/codegen
+          component: '["components/codegen"]'
           version: 3.5.2
           tags: '["3.5", "devnet","testnet","mainnet"]'
