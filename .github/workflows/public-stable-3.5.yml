@@ -11,17 +11,18 @@ defaults:
   run:
     shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail {0}"
 
+env:
+  READ_REGISTRY: 'europe-docker.pkg.dev/da-images/public-all'
+  READ_GHCR_REGISTRY_DPM: 'ghcr.io/digital-asset/temp'
+  REGISTRY: 'europe-docker.pkg.dev/da-images/public'
+  PROJECT: 'da-images'
+  BUCKET: 'da-images-public'
+  DOMAIN: 'get.digitalasset.com'
 
 jobs:
   oci-bundle:
     runs-on: digital-asset-dpm-assembly
-    env:
-      READ_REGISTRY: 'europe-docker.pkg.dev/da-images/public-all'
-      READ_GHCR_REGISTRY_DPM: 'ghcr.io/digital-asset/temp'
-      REGISTRY: 'europe-docker.pkg.dev/da-images/public'
-      PROJECT: 'da-images'
-      BUCKET: 'da-images-public'
-      DOMAIN: 'get.digitalasset.com'
+
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
@@ -230,6 +231,7 @@ jobs:
           artifacts: '["components/dpm"]'
           version: 1.0.21
           tags: '["latest","devnet","testnet","mainnet"]'
+          registry: ${{ env.REGISTRY }}
 
       # SDK bundle / docker
       - name: update tags for sdk (devnet)
@@ -238,6 +240,7 @@ jobs:
           artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
           version: 3.5.4
           tags: '["3.5","devnet"]'
+          registry: ${{ env.REGISTRY }}
 
       - name: update tags for sdk (testnet)
         uses: ./.github/actions/update-tags
@@ -245,6 +248,7 @@ jobs:
           artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
           version: 3.5.3
           tags: '["testnet"]'
+          registry: ${{ env.REGISTRY }}
 
       - name: update tags for sdk (mainnet)
         uses: ./.github/actions/update-tags
@@ -252,6 +256,7 @@ jobs:
           artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
           version: 3.5.2
           tags: '["mainnet"]'
+          registry: ${{ env.REGISTRY }}
 
       # Canton
       - name: update tags for canton (devnet)
@@ -260,6 +265,7 @@ jobs:
           artifacts: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
           version: 3.5.11
           tags: '["3.5","devnet"]'
+          registry: ${{ env.REGISTRY }}
 
       - name: update tags for canton (testnet)
         uses: ./.github/actions/update-tags
@@ -267,6 +273,7 @@ jobs:
           artifacts: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
           version: 3.5.10
           tags: '["testnet"]'
+          registry: ${{ env.REGISTRY }}
 
       - name: update tags for canton (mainnet)
         uses: ./.github/actions/update-tags
@@ -274,6 +281,7 @@ jobs:
           artifacts: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
           version: 3.5.9
           tags: '["mainnet"]'
+          registry: ${{ env.REGISTRY }}
 
       # PQS
       - name: update tags for pqs (all)
@@ -282,6 +290,7 @@ jobs:
           artifacts: '["components/scribe", "docker/participant-query-store", "docker/scribe", "charts/participant-query-store"]'
           version: 3.5.7
           tags: '["3.5","devnet","testnet","mainnet"]'
+          registry: ${{ env.REGISTRY }}
 
       # Daml Shell
       - name: update tags for daml-shell (all)
@@ -290,6 +299,7 @@ jobs:
           artifacts: '["components/daml-shell","docker/daml-shell"]'
           version: 3.5.1
           tags: '["3.5","devnet","testnet","mainnet"]'
+          registry: ${{ env.REGISTRY }}
 
       # damlc
       - name: update tags for damlc (all)
@@ -298,6 +308,7 @@ jobs:
           artifacts: '["components/damlc"]'
           version: 3.5.2
           tags: '["3.5","devnet","testnet","mainnet"]'
+          registry: ${{ env.REGISTRY }}
 
       # Upgrade Check
       - name: update tags for upgrade-check (all)
@@ -306,6 +317,7 @@ jobs:
           artifacts: '["components/upgrade-check"]'
           version: 3.5.2
           tags: '["3.5","devnet","testnet","mainnet"]'
+          registry: ${{ env.REGISTRY }}
 
       # Daml Script
       - name: update tags for daml-script (all)
@@ -314,6 +326,7 @@ jobs:
           artifacts: '["components/daml-script"]'
           version: 3.5.2
           tags: '["3.5","devnet","testnet","mainnet"]'
+          registry: ${{ env.REGISTRY }}
 
       # Daml New
       - name: update tags for daml-new (all)
@@ -322,6 +335,7 @@ jobs:
           artifacts: '["components/daml-new"]'
           version: 3.5.2
           tags: '["3.5","devnet","testnet","mainnet"]'
+          registry: ${{ env.REGISTRY }}
 
       # Codegen
       - name: update tags for codegen (all)
@@ -330,6 +344,7 @@ jobs:
           artifacts: '["components/codegen"]'
           version: 3.5.2
           tags: '["3.5","devnet","testnet","mainnet"]'
+          registry: ${{ env.REGISTRY }}
 
       # darsyncer
       - name: update tags for darsyncer (all)
@@ -338,6 +353,7 @@ jobs:
           artifacts: '["docker/darsyncer"]'
           version: 2.9.7
           tags: '["devnet","testnet","mainnet"]'
+          registry: ${{ env.REGISTRY }}
 
       # darsyncer
       - name: update tags for covalidation service (all)
@@ -346,6 +362,7 @@ jobs:
           artifacts: '["docker/covalidation-service"]'
           version: 0.7.4
           tags: '["latest","devnet","testnet","mainnet"]'
+          registry: ${{ env.REGISTRY }}
 
       # cometbft
       - name: update tags for cometbft (all)
@@ -354,3 +371,4 @@ jobs:
           artifacts: '["docker/cometbft-canton-network"]'
           version: "3.5.0-snapshot.20260203.17930.0.v8a849517-stable-20260204"
           tags: '["devnet","testnet","mainnet"]'
+          registry: ${{ env.REGISTRY }}
