@@ -23,9 +23,20 @@ runs:
     - name: Update ${{ inputs.component }} tags
       run: |
         component_with_version=${{ inputs.registry }}/${{ inputs.component }}:${{ inputs.version }}
+        
+        # check SHA for this version 
+        VERSION_DIGEST=$(oras resolve "${component_with_version}")
+        
         for tag in $(echo '${{ inputs.tags }}' | jq -r '.[]'); do
-          echo "Tagging $component_with_version"
-          oras tag --concurrency 1 "$component_with_version" "$tag"
-        done
+          
+          # check SHA for currently tag
+          TAG_DIGEST=$(oras resolve "${{ inputs.registry }}/${{ inputs.component }}:$tag" 2>/dev/null || true)
 
+          if [ "$VERSION_DIGEST" = "$TAG_DIGEST" ]; then
+            echo "stable already points to version $tag"
+          else
+            echo "Tagging $component_with_version"
+            oras tag --concurrency 1 "$component_with_version" "$tag"
+          fi
+        done
       shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail $0" "{0}"
