@@ -6,7 +6,7 @@ inputs:
     description: Version to Update
     required: true
   component:
-    description: Component to update
+    description: Component to update as JSON array
     required: true
   registry:
     description: Registry containing version to Update
@@ -21,21 +21,23 @@ runs:
   steps:
     - name: Update ${{ inputs.component }} tags
       run: |
-        component_with_version=${{ inputs.registry }}/${{ inputs.component }}:${{ inputs.version }}
+        for artifact in $(echo '${{ inputs.artifacts }}' | jq -r '.[]'); do
+          component_with_version=${{ inputs.registry }}/"$artifact":${{ inputs.version }}
+          # check SHA for this version
+          VERSION_DIGEST=$(oras resolve "${component_with_version}")
         
-        # check SHA for this version 
-        VERSION_DIGEST=$(oras resolve "${component_with_version}")
+          for tag in $(echo '${{ inputs.tags }}' | jq -r '.[]'); do
+            
+            # check SHA for currently tag
+            TAG_DIGEST=$(oras resolve "${{ inputs.registry }}/$artifact:$tag" 2>/dev/null || true)
+  
+            if [ "$VERSION_DIGEST" = "$TAG_DIGEST" ]; then
+              echo "${{ inputs.version }} is already tagged with $tag"
+            else
+              echo "Tagging $component_with_version with $tag"
+              oras tag --concurrency 1 "$component_with_version" "$tag"
+            fi
+          done
         
-        for tag in $(echo '${{ inputs.tags }}' | jq -r '.[]'); do
-          
-          # check SHA for currently tag
-          TAG_DIGEST=$(oras resolve "${{ inputs.registry }}/${{ inputs.component }}:$tag" 2>/dev/null || true)
-
-          if [ "$VERSION_DIGEST" = "$TAG_DIGEST" ]; then
-            echo "${{ inputs.version }} is already tagged with $tag"
-          else
-            echo "Tagging $component_with_version with $tag"
-            oras tag --concurrency 1 "$component_with_version" "$tag"
-          fi
         done
       shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail $0" "{0}"
