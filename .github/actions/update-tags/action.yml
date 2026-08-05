@@ -5,7 +5,7 @@ inputs:
   version:
     description: Version to Update
     required: true
-  component:
+  artifacts:
     description: Component to update as JSON array
     required: true
   registry:

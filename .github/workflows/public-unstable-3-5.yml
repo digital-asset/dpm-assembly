@@ -237,7 +237,7 @@ jobs:
       - name: update tags for dpm
         uses: ./.github/actions/update-tags
         with:
-          component: '["components/dpm"]'
+          artifacts: '["components/dpm"]'
           version: 1.0.21
           tags: '["latest","devnet","testnet","mainnet"]'
 
@@ -245,21 +245,21 @@ jobs:
       - name: update tags for sdk (devnet)
         uses: ./.github/actions/update-tags
         with:
-          component: '["sdk-manifests/open-source", "docker/sdk"]'
+          artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
           version: 3.5.4
           tags: '["3.5","devnet"]'
 
       - name: update tags for sdk (testnet)
         uses: ./.github/actions/update-tags
         with:
-          component: '["sdk-manifests/open-source", "docker/sdk"]'
+          artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
           version: 3.5.3
           tags: '["testnet"]'
 
       - name: update tags for sdk (mainnet)
         uses: ./.github/actions/update-tags
         with:
-          component: '["sdk-manifests/open-source", "docker/sdk"]'
+          artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
           version: 3.5.2
           tags: '["mainnet"]'
 
@@ -267,21 +267,21 @@ jobs:
       - name: update tags for canton (devnet)
         uses: ./.github/actions/update-tags
         with:
-          component: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
+          artifacts: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
           version: 3.5.11
           tags: '["3.5","devnet"]'
 
       - name: update tags for canton (testnet)
         uses: ./.github/actions/update-tags
         with:
-          component: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
+          artifacts: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
           version: 3.5.10
           tags: '["testnet"]'
 
       - name: update tags for canton (mainnet)
         uses: ./.github/actions/update-tags
         with:
-          component: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
+          artifacts: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
           version: 3.5.9
           tags: '["mainnet"]'
 
@@ -289,7 +289,7 @@ jobs:
       - name: update tags for pqs (all)
         uses: ./.github/actions/update-tags
         with:
-          component: '["components/scribe", "docker/participant-query-store", "charts/participant-query-store"]'
+          artifacts: '["components/scribe", "docker/participant-query-store", "charts/participant-query-store"]'
           version: 3.5.7
           tags: '["3.5","devnet","testnet","mainnet"]'
 
@@ -297,7 +297,7 @@ jobs:
       - name: update tags for daml-shell (all)
         uses: ./.github/actions/update-tags
         with:
-          component: '["components/daml-shell","docker/daml-shell"]'
+          artifacts: '["components/daml-shell","docker/daml-shell"]'
           version: 3.5.1
           tags: '["3.5","devnet","testnet","mainnet"]'
 
@@ -305,7 +305,7 @@ jobs:
       - name: update tags for damlc (all)
         uses: ./.github/actions/update-tags
         with:
-          component: '["components/damlc"]'
+          artifacts: '["components/damlc"]'
           version: 3.5.2
           tags: '["3.5","devnet","testnet","mainnet"]'
 
@@ -313,7 +313,7 @@ jobs:
       - name: update tags for upgrade-check (all)
         uses: ./.github/actions/update-tags
         with:
-          component: '["components/upgrade-check"]'
+          artifacts: '["components/upgrade-check"]'
           version: 3.5.2
           tags: '["3.5","devnet","testnet","mainnet"]'
 
@@ -321,7 +321,7 @@ jobs:
       - name: update tags for daml-script (all)
         uses: ./.github/actions/update-tags
         with:
-          component: '["components/daml-script"]'
+          artifacts: '["components/daml-script"]'
           version: 3.5.2
           tags: '["3.5","devnet","testnet","mainnet"]'
 
@@ -329,7 +329,7 @@ jobs:
       - name: update tags for daml-new (all)
         uses: ./.github/actions/update-tags
         with:
-          component: '["components/daml-new"]'
+          artifacts: '["components/daml-new"]'
           version: 3.5.2
           tags: '["3.5","devnet","testnet","mainnet"]'
 
@@ -337,6 +337,6 @@ jobs:
       - name: update tags for codegen (all)
         uses: ./.github/actions/update-tags
         with:
-          component: '["components/codegen"]'
+          artifacts: '["components/codegen"]'
           version: 3.5.2
           tags: '["3.5", "devnet","testnet","mainnet"]'
