@@ -240,6 +240,30 @@ jobs:
           version: 1.0.21
           tag: latest
 
+      - name: update tags for dpm
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: components/dpm
+          version: 1.0.21
+          tag: devnet
+
+      - name: update tags for dpm
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: components/dpm
+          version: 1.0.21
+          tag: testnet
+
+      - name: update tags for dpm
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: components/dpm
+          version: 1.0.21
+          tag: mainnet
+
       - name: update tags for sdk (devnet)
         uses: ./.github/actions/update-tags
         with:
