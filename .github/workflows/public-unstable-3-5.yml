@@ -224,8 +224,6 @@ jobs:
 
   update-tags:
     runs-on: digital-asset-dpm-assembly
-    needs:
-      - docker
     steps:
       - name: verify installation
         uses: ./.github/actions/update-tags
