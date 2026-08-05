@@ -223,6 +223,11 @@ jobs:
       version-tag: ${{ needs.oci-bundle.outputs.stable_version }}
 
   update-tags:
+
+
+    steps:
+      - run: |
+          oras tag ghcr.io/my-org/my-image "${{ matrix.tag }}"
     runs-on: digital-asset-dpm-assembly
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
@@ -238,7 +243,7 @@ jobs:
           registry: europe-docker.pkg.dev/da-images/public
           component: components/dpm
           version: 1.0.21
-          tag: latest
+          tags: '{"latest"}'
 
       - name: update tags for dpm
         uses: ./.github/actions/update-tags
@@ -246,31 +251,15 @@ jobs:
           registry: europe-docker.pkg.dev/da-images/public
           component: components/dpm
           version: 1.0.21
-          tag: devnet
-
-      - name: update tags for dpm
-        uses: ./.github/actions/update-tags
-        with:
-          registry: europe-docker.pkg.dev/da-images/public
-          component: components/dpm
-          version: 1.0.21
-          tag: testnet
-
-      - name: update tags for dpm
-        uses: ./.github/actions/update-tags
-        with:
-          registry: europe-docker.pkg.dev/da-images/public
-          component: components/dpm
-          version: 1.0.21
-          tag: mainnet
+          tags: '["devnet","testnet","mainnet"]'
 
       - name: update tags for sdk (devnet)
         uses: ./.github/actions/update-tags
         with:
           registry: europe-docker.pkg.dev/da-images/public
           component: sdk-manifests/open-source
-          version: 3.5.3
-          tag: devnet
+          version: 3.5.4
+          tags: '{"devnet"}'
 
       - name: update tags for sdk (testnet)
         uses: ./.github/actions/update-tags
@@ -278,7 +267,7 @@ jobs:
           registry: europe-docker.pkg.dev/da-images/public
           component: sdk-manifests/open-source
           version: 3.5.3
-          tag: testnet
+          tags: '{"testnet"}'
 
       - name: update tags for sdk (mainnet)
         uses: ./.github/actions/update-tags
@@ -286,7 +275,7 @@ jobs:
           registry: europe-docker.pkg.dev/da-images/public
           component: sdk-manifests/open-source
           version: 3.5.2
-          tag: mainnet
+          tags: '{"mainnet"}'
 
       - name: update tags for canton (devnet)
         uses: ./.github/actions/update-tags
@@ -294,7 +283,7 @@ jobs:
           registry: europe-docker.pkg.dev/da-images/public
           component: components/canton-open-source
           version: 3.5.11
-          tag: devnet
+          tags: '{"devnet"}'
 
       - name: update tags for canton (testnet)
         uses: ./.github/actions/update-tags
@@ -302,7 +291,7 @@ jobs:
           registry: europe-docker.pkg.dev/da-images/public
           component: components/canton-open-source
           version: 3.5.10
-          tag: testnet
+          tags: '{"testnet"}'
 
       - name: update tags for canton (mainnet)
         uses: ./.github/actions/update-tags
@@ -310,99 +299,36 @@ jobs:
           registry: europe-docker.pkg.dev/da-images/public
           component: components/canton-open-source
           version: 3.5.9
-          tag: mainnet
+          tags: '{"mainnet"}'
 
-      - name: update tags for pqs (devnet)
+      - name: update tags for pqs (all)
         uses: ./.github/actions/update-tags
         with:
           registry: europe-docker.pkg.dev/da-images/public
           component: components/scribe
           version: 3.5.7
-          tag: devnet
+          tags: '["devnet","testnet","mainnet"]'
 
-      - name: update tags for pqs (testnet)
-        uses: ./.github/actions/update-tags
-        with:
-          registry: europe-docker.pkg.dev/da-images/public
-          component: components/scribe
-          version: 3.5.7
-          tag: testnet
-
-      - name: update tags for pqs (mainnet)
-        uses: ./.github/actions/update-tags
-        with:
-          registry: europe-docker.pkg.dev/da-images/public
-          component: components/scribe
-          version: 3.5.7
-          tag: mainnet
-
-      - name: update tags for pqs docker (devnet)
+      - name: update tags for pqs docker (all)
         uses: ./.github/actions/update-tags
         with:
           registry: europe-docker.pkg.dev/da-images/public
           component: docker/participant-query-store
           version: 3.5.7
-          tag: devnet
+          tags: '["devnet","testnet","mainnet"]'
 
-      - name: update tags for pqs docker (testnet)
-        uses: ./.github/actions/update-tags
-        with:
-          registry: europe-docker.pkg.dev/da-images/public
-          component: docker/participant-query-store
-          version: 3.5.7
-          tag: testnet
-
-      - name: update tags for pqs docker (mainnet)
-        uses: ./.github/actions/update-tags
-        with:
-          registry: europe-docker.pkg.dev/da-images/public
-          component: docker/participant-query-store
-          version: 3.5.7
-          tag: mainnet
-
-      - name: update tags for pqs charts (devnet)
+      - name: update tags for pqs charts (all)
         uses: ./.github/actions/update-tags
         with:
           registry: europe-docker.pkg.dev/da-images/public
           component: charts/participant-query-store
           version: 3.5.7
-          tag: devnet
+          tags: '["devnet","testnet","mainnet"]'
 
-      - name: update tags for pqs charts (testnet)
-        uses: ./.github/actions/update-tags
-        with:
-          registry: europe-docker.pkg.dev/da-images/public
-          component: charts/participant-query-store
-          version: 3.5.7
-          tag: testnet
-
-      - name: update tags for pqs charts (mainnet)
-        uses: ./.github/actions/update-tags
-        with:
-          registry: europe-docker.pkg.dev/da-images/public
-          component: charts/participant-query-store
-          version: 3.5.7
-
-      - name: update tags for daml-shell (devnet)
+      - name: update tags for daml-shell (all)
         uses: ./.github/actions/update-tags
         with:
           registry: europe-docker.pkg.dev/da-images/public
           component: components/daml-shell
           version: 3.5.1
-          tag: devnet
-
-      - name: update tags for daml-shell (testnet)
-        uses: ./.github/actions/update-tags
-        with:
-          registry: europe-docker.pkg.dev/da-images/public
-          component: components/daml-shell
-          version: 3.5.1
-          tag: testnet
-          
-      - name: update tags for daml-shell (mainnet)
-        uses: ./.github/actions/update-tags
-        with:
-          registry: europe-docker.pkg.dev/da-images/public
-          component: components/daml-shell
-          version: 3.5.1
-          tag: mainnet
+          tags: '["devnet","testnet","mainnet"]'

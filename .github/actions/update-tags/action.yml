@@ -11,15 +11,21 @@ inputs:
   registry:
     description: Registry containing version to Update
     required: true
-  tag:
-    description: Tag to update
+    default: "europe-docker.pkg.dev/da-images/public-unstable"
+  tags:
+    description: Tags to update as JSON array
     required: true
+    default: '["devnet","testnet","mainnet"]'
 
 runs:
   using: composite
   steps:
-
-    - name: Update dpm latest tag
+    - name: Update ${{ inputs.component }} latest tag
       run: |
-        oras tag --concurrency 1 ${{ inputs.registry }}/${{ inputs.component }}:${{ inputs.version }} ${{ inputs.tag }}
+        component_with_version=${{ inputs.registry }}/${{ inputs.component }}:${{ inputs.version }}
+        echo '${{ inputs.tags }}' | jq -r '.[]' | while read -r tag; do
+          echo "Tagging $component:$tag"
+          oras tag --concurrency 1 "$component_with_version"  "$tag"
+        done        
+
       shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail $0" "{0}"
