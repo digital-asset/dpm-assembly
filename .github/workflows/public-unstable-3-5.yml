@@ -382,4 +382,27 @@ jobs:
           registry: europe-docker.pkg.dev/da-images/public
           component: charts/participant-query-store
           version: 3.5.7
+
+      - name: update tags for daml-shell (devnet)
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: components/daml-shell
+          version: 3.5.1
+          tag: devnet
+
+      - name: update tags for daml-shell (testnet)
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: components/daml-shell
+          version: 3.5.1
+          tag: testnet
+          
+      - name: update tags for daml-shell (mainnet)
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: components/daml-shell
+          version: 3.5.1
           tag: mainnet
