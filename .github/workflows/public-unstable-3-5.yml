@@ -232,10 +232,10 @@ jobs:
       - uses: ./.github/actions/gcloud-login
         with:
           key: ${{ secrets.DA_IMAGES }}
-      - name: update tags
+      - name: update tags for dpm
         uses: ./.github/actions/update-tags
         with:
-          registry: europe-docker.pkg.dev/da-images/public-unstable
+          registry: europe-docker.pkg.dev/da-images/public
           component: components/dpm
           version: 1.0.21
           tag: latest
