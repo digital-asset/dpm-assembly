@@ -238,7 +238,7 @@ jobs:
           registry: europe-docker.pkg.dev/da-images/public
           component: components/dpm
           version: 1.0.21
-          tags: '{"latest"}'
+          tags: '["latest"]'
 
       - name: update tags for dpm
         uses: ./.github/actions/update-tags
@@ -254,7 +254,7 @@ jobs:
           registry: europe-docker.pkg.dev/da-images/public
           component: sdk-manifests/open-source
           version: 3.5.4
-          tags: '{"devnet"}'
+          tags: '["devnet"]'
 
       - name: update tags for sdk (testnet)
         uses: ./.github/actions/update-tags
@@ -262,7 +262,7 @@ jobs:
           registry: europe-docker.pkg.dev/da-images/public
           component: sdk-manifests/open-source
           version: 3.5.3
-          tags: '{"testnet"}'
+          tags: '["testnet"]'
 
       - name: update tags for sdk (mainnet)
         uses: ./.github/actions/update-tags
@@ -270,7 +270,7 @@ jobs:
           registry: europe-docker.pkg.dev/da-images/public
           component: sdk-manifests/open-source
           version: 3.5.2
-          tags: '{"mainnet"}'
+          tags: '["mainnet"]'
 
       - name: update tags for canton (devnet)
         uses: ./.github/actions/update-tags
@@ -278,7 +278,7 @@ jobs:
           registry: europe-docker.pkg.dev/da-images/public
           component: components/canton-open-source
           version: 3.5.11
-          tags: '{"devnet"}'
+          tags: '["devnet"]'
 
       - name: update tags for canton (testnet)
         uses: ./.github/actions/update-tags
@@ -286,7 +286,7 @@ jobs:
           registry: europe-docker.pkg.dev/da-images/public
           component: components/canton-open-source
           version: 3.5.10
-          tags: '{"testnet"}'
+          tags: '["testnet"]'
 
       - name: update tags for canton (mainnet)
         uses: ./.github/actions/update-tags
@@ -294,7 +294,7 @@ jobs:
           registry: europe-docker.pkg.dev/da-images/public
           component: components/canton-open-source
           version: 3.5.9
-          tags: '{"mainnet"}'
+          tags: '["mainnet"]'
 
       - name: update tags for pqs (all)
         uses: ./.github/actions/update-tags
