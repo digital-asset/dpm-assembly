@@ -240,7 +240,7 @@ jobs:
           version: 1.0.21
           tag: latest
 
-      - name: update tags for sdk devnet
+      - name: update tags for sdk (devnet)
         uses: ./.github/actions/update-tags
         with:
           registry: europe-docker.pkg.dev/da-images/public
@@ -248,7 +248,7 @@ jobs:
           version: 3.5.3
           tag: devnet
 
-      - name: update tags for sdk testnet
+      - name: update tags for sdk (testnet)
         uses: ./.github/actions/update-tags
         with:
           registry: europe-docker.pkg.dev/da-images/public
@@ -256,7 +256,7 @@ jobs:
           version: 3.5.3
           tag: testnet
 
-      - name: update tags for sdk mainnet
+      - name: update tags for sdk (mainnet)
         uses: ./.github/actions/update-tags
         with:
           registry: europe-docker.pkg.dev/da-images/public
@@ -264,7 +264,7 @@ jobs:
           version: 3.5.2
           tag: mainnet
 
-      - name: update tags for canton devnet
+      - name: update tags for canton (devnet)
         uses: ./.github/actions/update-tags
         with:
           registry: europe-docker.pkg.dev/da-images/public
@@ -272,7 +272,7 @@ jobs:
           version: 3.5.11
           tag: devnet
 
-      - name: update tags for sdk testnet
+      - name: update tags for canton (testnet)
         uses: ./.github/actions/update-tags
         with:
           registry: europe-docker.pkg.dev/da-images/public
@@ -280,10 +280,82 @@ jobs:
           version: 3.5.10
           tag: testnet
 
-      - name: update tags for sdk mainnet
+      - name: update tags for canton (mainnet)
         uses: ./.github/actions/update-tags
         with:
           registry: europe-docker.pkg.dev/da-images/public
           component: components/canton-open-source
           version: 3.5.9
+          tag: mainnet
+
+      - name: update tags for pqs (devnet)
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: components/scribe
+          version: 3.5.7
+          tag: devnet
+
+      - name: update tags for pqs (testnet)
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: components/scribe
+          version: 3.5.7
+          tag: testnet
+
+      - name: update tags for pqs (mainnet)
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: components/scribe
+          version: 3.5.7
+          tag: mainnet
+
+      - name: update tags for pqs docker (devnet)
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: docker/participant-query-store
+          version: 3.5.7
+          tag: devnet
+
+      - name: update tags for pqs docker (testnet)
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: docker/participant-query-store
+          version: 3.5.7
+          tag: testnet
+
+      - name: update tags for pqs docker (mainnet)
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: docker/participant-query-store
+          version: 3.5.7
+          tag: mainnet
+
+      - name: update tags for pqs charts (devnet)
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: charts/participant-query-store
+          version: 3.5.7
+          tag: devnet
+
+      - name: update tags for pqs charts (testnet)
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: charts/participant-query-store
+          version: 3.5.7
+          tag: testnet
+
+      - name: update tags for pqs charts (mainnet)
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public
+          component: charts/participant-query-store
+          version: 3.5.7
           tag: mainnet
