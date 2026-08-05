@@ -221,3 +221,122 @@ jobs:
     with:
       registry: europe-docker.pkg.dev/da-images/public-unstable
       version-tag: ${{ needs.oci-bundle.outputs.stable_version }}
+
+  update-tags:
+    runs-on: digital-asset-dpm-assembly
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/nix
+      - uses: ./.github/actions/gcloud-login
+        with:
+          key: ${{ secrets.DA_IMAGES }}
+
+      # DPM
+      - name: update tags for dpm
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/dpm
+          version: 1.0.21
+          tags: '["latest","devnet","testnet","mainnet"]'
+
+      # SDK bundle / docker
+      - name: update tags for sdk (devnet)
+        uses: ./.github/actions/update-tags
+        with:
+          component: '["sdk-manifests/open-source", "docker/sdk"]'
+          version: 3.5.4
+          tags: '["3.5","devnet"]'
+
+      - name: update tags for sdk (testnet)
+        uses: ./.github/actions/update-tags
+        with:
+          component: '["sdk-manifests/open-source", "docker/sdk"]'
+          version: 3.5.3
+          tags: '["testnet"]'
+
+      - name: update tags for sdk (mainnet)
+        uses: ./.github/actions/update-tags
+        with:
+          component: '["sdk-manifests/open-source", "docker/sdk"]'
+          version: 3.5.2
+          tags: '["mainnet"]'
+
+      # Canton
+      - name: update tags for canton (devnet)
+        uses: ./.github/actions/update-tags
+        with:
+          component: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
+          version: 3.5.11
+          tags: '["3.5","devnet"]'
+
+      - name: update tags for canton (testnet)
+        uses: ./.github/actions/update-tags
+        with:
+          component: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
+          version: 3.5.10
+          tags: '["testnet"]'
+
+      - name: update tags for canton (mainnet)
+        uses: ./.github/actions/update-tags
+        with:
+          component: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
+          version: 3.5.9
+          tags: '["mainnet"]'
+
+      # PQS
+      - name: update tags for pqs (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: '["components/scribe", "docker/participant-query-store", "charts/participant-query-store"]'
+          version: 3.5.7
+          tags: '["3.5","devnet","testnet","mainnet"]'
+
+      # Daml Shell
+      - name: update tags for daml-shell (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: '["components/daml-shell","docker/daml-shell"]'
+          version: 3.5.1
+          tags: '["3.5","devnet","testnet","mainnet"]'
+
+      # damlc
+      - name: update tags for damlc (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/damlc
+          version: 3.5.2
+          tags: '["3.5","devnet","testnet","mainnet"]'
+
+      # Upgrade Check
+      - name: update tags for upgrade-check (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/upgrade-check
+          version: 3.5.2
+          tags: '["3.5","devnet","testnet","mainnet"]'
+
+      # Daml Script
+      - name: update tags for daml-script (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/daml-script
+          version: 3.5.2
+          tags: '["3.5","devnet","testnet","mainnet"]'
+
+      # Daml New
+      - name: update tags for daml-new (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/daml-new
+          version: 3.5.2
+          tags: '["3.5","devnet","testnet","mainnet"]'
+
+      # Codegen
+      - name: update tags for codegen (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/codegen
+          version: 3.5.2
+          tags: '["3.5", "devnet","testnet","mainnet"]'
