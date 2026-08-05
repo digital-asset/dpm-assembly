@@ -33,9 +33,9 @@ runs:
           TAG_DIGEST=$(oras resolve "${{ inputs.registry }}/${{ inputs.component }}:$tag" 2>/dev/null || true)
 
           if [ "$VERSION_DIGEST" = "$TAG_DIGEST" ]; then
-            echo "stable already points to version $tag"
+            echo "${{ inputs.version }} is already tagged with $tag"
           else
-            echo "Tagging $component_with_version"
+            echo "Tagging $component_with_version with $tag"
             oras tag --concurrency 1 "$component_with_version" "$tag"
           fi
         done
