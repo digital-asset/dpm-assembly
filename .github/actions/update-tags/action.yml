@@ -20,7 +20,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Update ${{ inputs.component }} latest tag
+    - name: Update ${{ inputs.component }} tags
       run: |
         component_with_version=${{ inputs.registry }}/${{ inputs.component }}:${{ inputs.version }}
         for tag in $(echo '${{ inputs.tags }}' | jq -r '.[]'); do
