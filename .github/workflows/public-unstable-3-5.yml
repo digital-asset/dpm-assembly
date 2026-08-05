@@ -223,9 +223,14 @@ jobs:
       version-tag: ${{ needs.oci-bundle.outputs.stable_version }}
 
   update-tags:
-    uses: ./.github/actions/update-tags
-    with:
-      registry: europe-docker.pkg.dev/da-images/public-unstable
-      component: components/dpm
-      version: 1.0.21
-      tag: latest
+    runs-on: digital-asset-dpm-assembly
+    needs:
+      - docker
+    steps:
+      - name: verify installation
+        uses: ./.github/actions/update-tags
+        with:
+          registry: europe-docker.pkg.dev/da-images/public-unstable
+          component: components/dpm
+          version: 1.0.21
+          tag: latest
