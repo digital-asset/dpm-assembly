@@ -1,0 +1,25 @@
+name: Update Tags
+description: Test release component compatibility and backwards compatibility
+
+inputs:
+  version:
+    description: Version to Update
+    required: true
+  component:
+    description: Component to update
+    required: true
+  registry:
+    description: Registry containing version to Update
+    required: true
+  tag:
+    description: Tag to update
+    required: true
+
+runs:
+  using: composite
+  steps:
+
+    - name: Update dpm latest tag
+      run: |
+        oras tag --concurrency 1 ${{ inputs.registry }}/${{ inputs.component }}:${{ inputs.version }} ${{ inputs.tag }}
+      shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail $0" "{0}"
