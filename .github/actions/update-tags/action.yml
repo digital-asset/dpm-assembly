@@ -11,7 +11,7 @@ inputs:
   registry:
     description: Registry containing version to Update
     required: true
-    default: "europe-docker.pkg.dev/da-images/public-unstable"
+    default: "europe-docker.pkg.dev/da-images/public"
   tags:
     description: Tags to update as JSON array
     required: true

@@ -232,34 +232,24 @@ jobs:
       - uses: ./.github/actions/gcloud-login
         with:
           key: ${{ secrets.DA_IMAGES }}
-      - name: update tags for dpm
-        uses: ./.github/actions/update-tags
-        with:
-          registry: europe-docker.pkg.dev/da-images/public
-          component: components/dpm
-          version: 1.0.21
-          tags: '["latest"]'
 
       - name: update tags for dpm
         uses: ./.github/actions/update-tags
         with:
-          registry: europe-docker.pkg.dev/da-images/public
           component: components/dpm
           version: 1.0.21
-          tags: '["devnet","testnet","mainnet"]'
+          tags: '["latest","devnet","testnet","mainnet"]'
 
       - name: update tags for sdk (devnet)
         uses: ./.github/actions/update-tags
         with:
-          registry: europe-docker.pkg.dev/da-images/public
           component: sdk-manifests/open-source
           version: 3.5.4
-          tags: '["devnet"]'
+          tags: '["3.5","devnet"]'
 
       - name: update tags for sdk (testnet)
         uses: ./.github/actions/update-tags
         with:
-          registry: europe-docker.pkg.dev/da-images/public
           component: sdk-manifests/open-source
           version: 3.5.3
           tags: '["testnet"]'
@@ -267,7 +257,6 @@ jobs:
       - name: update tags for sdk (mainnet)
         uses: ./.github/actions/update-tags
         with:
-          registry: europe-docker.pkg.dev/da-images/public
           component: sdk-manifests/open-source
           version: 3.5.2
           tags: '["mainnet"]'
@@ -275,15 +264,13 @@ jobs:
       - name: update tags for canton (devnet)
         uses: ./.github/actions/update-tags
         with:
-          registry: europe-docker.pkg.dev/da-images/public
           component: components/canton-open-source
           version: 3.5.11
-          tags: '["devnet"]'
+          tags: '["3.5","devnet"]'
 
       - name: update tags for canton (testnet)
         uses: ./.github/actions/update-tags
         with:
-          registry: europe-docker.pkg.dev/da-images/public
           component: components/canton-open-source
           version: 3.5.10
           tags: '["testnet"]'
@@ -291,7 +278,6 @@ jobs:
       - name: update tags for canton (mainnet)
         uses: ./.github/actions/update-tags
         with:
-          registry: europe-docker.pkg.dev/da-images/public
           component: components/canton-open-source
           version: 3.5.9
           tags: '["mainnet"]'
@@ -299,31 +285,62 @@ jobs:
       - name: update tags for pqs (all)
         uses: ./.github/actions/update-tags
         with:
-          registry: europe-docker.pkg.dev/da-images/public
           component: components/scribe
           version: 3.5.7
-          tags: '["devnet","testnet","mainnet"]'
+          tags: '["3.5","devnet","testnet","mainnet"]'
 
       - name: update tags for pqs docker (all)
         uses: ./.github/actions/update-tags
         with:
-          registry: europe-docker.pkg.dev/da-images/public
           component: docker/participant-query-store
           version: 3.5.7
-          tags: '["devnet","testnet","mainnet"]'
+          tags: '["3.5","devnet","testnet","mainnet"]'
 
       - name: update tags for pqs charts (all)
         uses: ./.github/actions/update-tags
         with:
-          registry: europe-docker.pkg.dev/da-images/public
           component: charts/participant-query-store
           version: 3.5.7
-          tags: '["devnet","testnet","mainnet"]'
+          tags: '["3.5","devnet","testnet","mainnet"]'
 
       - name: update tags for daml-shell (all)
         uses: ./.github/actions/update-tags
         with:
-          registry: europe-docker.pkg.dev/da-images/public
           component: components/daml-shell
           version: 3.5.1
-          tags: '["devnet","testnet","mainnet"]'
+          tags: '["3.5","devnet","testnet","mainnet"]'
+
+      - name: update tags for damlc (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/damlc
+          version: 3.5.2
+          tags: '["3.5","devnet","testnet","mainnet"]'
+
+      - name: update tags for upgrade-check (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/upgrade-check
+          version: 3.5.2
+          tags: '["3.5","devnet","testnet","mainnet"]'
+
+      - name: update tags for daml-script (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/daml-script
+          version: 3.5.2
+          tags: '["3.5","devnet","testnet","mainnet"]'
+
+      - name: update tags for daml-new (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/daml-new
+          version: 3.5.2
+          tags: '["3.5","devnet","testnet","mainnet"]'
+
+      - name: update tags for codegen (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/codegen
+          version: 3.5.2
+          tags: '["3.5", "devnet","testnet","mainnet"]'
