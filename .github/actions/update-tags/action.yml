@@ -18,7 +18,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Update ${{ inputs.component }} tags
+    - name: Update ${{ inputs.artifacts }} tags
       run: |
         for artifact in $(echo '${{ inputs.artifacts }}' | jq -r '.[]'); do
           component_with_version=${{ inputs.registry }}/"$artifact":${{ inputs.version }}
