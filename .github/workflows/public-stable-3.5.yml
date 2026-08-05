@@ -224,7 +224,7 @@ jobs:
           key: ${{ secrets.DA_IMAGES }}
 
       # DPM
-      - name: update tags for dpm
+      - name: update tags for dpm (all)
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["components/dpm"]'
