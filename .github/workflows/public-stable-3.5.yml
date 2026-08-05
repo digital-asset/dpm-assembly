@@ -212,4 +212,125 @@ jobs:
         run: '%DPM_HOME%\\bin\\dpm.cmd version'
         shell: cmd
 
-# notify_slack TODO
+  update-tags:
+    runs-on: digital-asset-dpm-assembly
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/nix
+      - uses: ./.github/actions/gcloud-login
+        with:
+          key: ${{ secrets.DA_IMAGES }}
+
+      - name: update tags for dpm
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/dpm
+          version: 1.0.21
+          tags: '["latest","devnet","testnet","mainnet"]'
+
+      - name: update tags for sdk (devnet)
+        uses: ./.github/actions/update-tags
+        with:
+          component: sdk-manifests/open-source
+          version: 3.5.4
+          tags: '["3.5","devnet"]'
+
+      - name: update tags for sdk (testnet)
+        uses: ./.github/actions/update-tags
+        with:
+          component: sdk-manifests/open-source
+          version: 3.5.3
+          tags: '["testnet"]'
+
+      - name: update tags for sdk (mainnet)
+        uses: ./.github/actions/update-tags
+        with:
+          component: sdk-manifests/open-source
+          version: 3.5.2
+          tags: '["mainnet"]'
+
+      - name: update tags for canton (devnet)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/canton-open-source
+          version: 3.5.11
+          tags: '["3.5","devnet"]'
+
+      - name: update tags for canton (testnet)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/canton-open-source
+          version: 3.5.10
+          tags: '["testnet"]'
+
+      - name: update tags for canton (mainnet)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/canton-open-source
+          version: 3.5.9
+          tags: '["mainnet"]'
+
+      - name: update tags for pqs (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/scribe
+          version: 3.5.7
+          tags: '["3.5","devnet","testnet","mainnet"]'
+
+      - name: update tags for pqs docker (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: docker/participant-query-store
+          version: 3.5.7
+          tags: '["3.5","devnet","testnet","mainnet"]'
+
+      - name: update tags for pqs charts (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: charts/participant-query-store
+          version: 3.5.7
+          tags: '["3.5","devnet","testnet","mainnet"]'
+
+      - name: update tags for daml-shell (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/daml-shell
+          version: 3.5.1
+          tags: '["3.5","devnet","testnet","mainnet"]'
+
+      - name: update tags for damlc (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/damlc
+          version: 3.5.2
+          tags: '["3.5","devnet","testnet","mainnet"]'
+
+      - name: update tags for upgrade-check (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/upgrade-check
+          version: 3.5.2
+          tags: '["3.5","devnet","testnet","mainnet"]'
+
+      - name: update tags for daml-script (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/daml-script
+          version: 3.5.2
+          tags: '["3.5","devnet","testnet","mainnet"]'
+
+      - name: update tags for daml-new (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/daml-new
+          version: 3.5.2
+          tags: '["3.5","devnet","testnet","mainnet"]'
+
+      - name: update tags for codegen (all)
+        uses: ./.github/actions/update-tags
+        with:
+          component: components/codegen
+          version: 3.5.2
+          tags: '["3.5", "devnet","testnet","mainnet"]'
