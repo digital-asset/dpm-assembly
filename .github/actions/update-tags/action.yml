@@ -1,5 +1,5 @@
 name: Update Tags
-description: Test release component compatibility and backwards compatibility
+description: Update an OCI artifact tag in a registry using ORAS
 
 inputs:
   version:
