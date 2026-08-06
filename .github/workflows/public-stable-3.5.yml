@@ -242,7 +242,7 @@ jobs:
         with:
           artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
           version: 3.5.4
-          tags: '["3.5","devnet"]'
+          tags: '["latest","3.5","devnet"]'
           registry: ${{ env.REGISTRY }}
 
       - name: update tags for sdk (testnet)
