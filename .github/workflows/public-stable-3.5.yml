@@ -356,7 +356,7 @@ jobs:
           tags: '["devnet","testnet","mainnet"]'
           registry: ${{ env.REGISTRY }}
 
-      # darsyncer
+      # covalidation service
       - name: update tags for covalidation service (all)
         uses: ./.github/actions/update-tags
         with:
