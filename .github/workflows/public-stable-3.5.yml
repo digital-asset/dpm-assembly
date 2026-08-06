@@ -101,7 +101,7 @@ jobs:
               - Dpm
             
             ### For installation:
-              - Follow [installation instructions](https://docs.canton.network/sdks-tools/cli-tools/dpm#installation) or [manual installation instructions](https://docs.canton.network/sdks-tools/cli-tools/dpm#manual-installation-instructions)          
+              - Follow [installation instructions](https://docs.canton.network/sdks-tools/cli-tools/dpm#installation) or [manual installation instructions](https://docs.canton.network/sdks-tools/cli-tools/dpm#manual-installation-instructions)
 
   docker:
     runs-on: digital-asset-dpm-assembly
