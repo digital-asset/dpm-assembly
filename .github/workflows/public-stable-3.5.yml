@@ -82,24 +82,26 @@ jobs:
             
             Just published ${{ steps.versions.outputs.stable }} SDK
             
-            Bundles:
-              - [OSX arm64 tarball](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-darwin-arm64.tar.gz)
-              - [OSX amd64 tarball](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-darwin-amd64.tar.gz)
-              - [Linux arm64 tarball](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-linux-arm64.tar.gz)
-              - [Linux amd64 tarball](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-linux-amd64.tar.gz)
-              - [Windows amd64 exe](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-windows-amd64.exe)
-              - [Windows amd64 zip](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-windows-amd64.zip)
+            ### Bundles:
+              - [OSX arm64 tarball](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-darwin-arm64.tar.gz) | [OSX amd64 tarball](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-darwin-amd64.tar.gz)
+              - [Linux arm64 tarball](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-linux-arm64.tar.gz) | [Linux amd64 tarball](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-linux-amd64.tar.gz)
+              - [Windows amd64 exe](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-windows-amd64.exe) | [Windows amd64 zip](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-windows-amd64.zip)
             
-            Components:
+            ### Components:
               - [${{ steps.versions.outputs.stable }} bundled release versions](https://github.com/digital-asset/dpm-assembly/blob/main/latest/open-source/3.5.yaml)
               - Canton
-              - Daml (includes damlc, codegen, etc)
-              - Scribe
-              - Shell
+              - Daml
+                - Codegen
+                - Daml Script
+                - Damlc
+                - New Templates
+                - Upgrade Check (SCU)
+              - Scribe (PQS)
+              - Daml Shell
               - Dpm
             
-            For installation:
-              - Follow [installation instructions](https://docs.digitalasset.com/build/3.5/dpm/dpm.html#installation-instructions)          
+            ### For installation:
+              - Follow [installation instructions](https://docs.canton.network/sdks-tools/cli-tools/dpm#installation) or [manual installation instructions](https://docs.canton.network/sdks-tools/cli-tools/dpm#manual-installation-instructions)          
 
   docker:
     runs-on: digital-asset-dpm-assembly
