@@ -70,12 +70,13 @@ async function test() {
 
   const queryResp = await client.POST("/v2/state/active-contracts", {
     body: {
-      filter: {
+      eventFormat: {
         filtersByParty: {
           [alice]: {}
-        }
+        },
+        verbose: false
       },
-      activeAtOffset: ledgerEnd
+      activeAtOffset: ledgerEnd,
     } as components["schemas"]["GetActiveContractsRequest"]
   });
   const activeContracts = await valueOrError(queryResp);
