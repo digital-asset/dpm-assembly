@@ -62,7 +62,7 @@ async function test() {
       actAs: [alice],
       readAs: [alice],
     }
-  }); 
+  });
   console.log("Created contract: " + JSON.stringify(await valueOrError(createResp)));
 
   const ledgerEndResp = await client.GET("/v2/state/ledger-end");
