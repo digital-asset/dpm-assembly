@@ -241,7 +241,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
-          version: 3.5.4
+          version: 3.5.5
           tags: '["latest","3.5","devnet"]'
           registry: ${{ env.REGISTRY }}
 
@@ -249,7 +249,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
-          version: 3.5.3
+          version: 3.5.4
           tags: '["testnet"]'
           registry: ${{ env.REGISTRY }}
 
@@ -257,7 +257,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
-          version: 3.5.2
+          version: 3.5.3
           tags: '["mainnet"]'
           registry: ${{ env.REGISTRY }}
 
@@ -266,7 +266,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
-          version: 3.5.11
+          version: 3.5.12
           tags: '["3.5","devnet"]'
           registry: ${{ env.REGISTRY }}
 
@@ -274,7 +274,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
-          version: 3.5.10
+          version: 3.5.11
           tags: '["testnet"]'
           registry: ${{ env.REGISTRY }}
 
@@ -282,7 +282,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
-          version: 3.5.9
+          version: 3.5.10
           tags: '["mainnet"]'
           registry: ${{ env.REGISTRY }}
 
