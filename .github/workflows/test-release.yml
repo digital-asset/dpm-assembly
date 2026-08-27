@@ -1,4 +1,4 @@
-name: public-unstable-3-5
+name: public-unstable-3-6
 
 on:
   workflow_call:
