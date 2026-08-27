@@ -273,7 +273,9 @@ jobs:
       - name: update tags for canton (testnet)
         uses: ./.github/actions/update-tags
         with:
-          artifacts: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
+#          artifacts: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
+#          special case snapshot -- only tag the component dpm has promoted
+          artifacts: '["components/canton-open-source"]'
           version: 3.5.14-snapshot.20260815.19176.0.v65fa04f6
           tags: '["testnet"]'
           registry: ${{ env.REGISTRY }}
