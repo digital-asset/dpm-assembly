@@ -13,7 +13,7 @@ export DPM_ASSEMBLY_RUN_NUMBER=${DPM_ASSEMBLY_RUN_NUMBER:-"0"}
 export DOMAIN=${DOMAIN:-"get.digitalasset-staging.com"}
 export PROJECT=${PROJECT:-"da-images-dev"}
 export BUCKET=${BUCKET:-"da-images-dev-public-unstable"}
-export MANIFEST=${MANIFEST:-"latest/unstable/3.5.yaml"}
+export MANIFEST=${MANIFEST:-"latest/unstable/3.6.yaml"}
 extra_tags=()
 
 sanitize_extra_tag() {

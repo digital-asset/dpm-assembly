@@ -1,4 +1,4 @@
-name: public-unstable-3-5
+name: public-unstable-3-6
 
 on:
   push:
@@ -42,7 +42,7 @@ jobs:
         uses: ./.github/actions/versions
       - uses: ./.github/actions/release-unstable
         with:
-          manifest: "latest/unstable/3.5.yaml"
+          manifest: "latest/unstable/3.6.yaml"
           extra-tags: --extra-tags="${{ github.ref_name }}"
           
   docker:
