@@ -1,9 +1,9 @@
 # 3.5 release
 edition: open-source
-version: 3.5.5
+version: 3.5.6
 components:
   canton-open-source:
-    version: 3.5.12
+    version: 3.5.14-snapshot.20260815.19176.0.v65fa04f6
   codegen:
     version: 3.5.2
   daml-new:
