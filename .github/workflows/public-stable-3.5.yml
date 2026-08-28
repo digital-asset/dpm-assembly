@@ -88,7 +88,7 @@ jobs:
               - [Windows amd64 exe](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-windows-amd64.exe) | [Windows amd64 zip](https://get.digitalasset.com/install/dpm-sdk/dpm-${{ steps.versions.outputs.stable }}-windows-amd64.zip)
             
             ### Components:
-              - [${{ steps.versions.outputs.stable }} bundled release versions](https://github.com/digital-asset/dpm-assembly/blob/main/latest/open-source/3.5.yaml)
+              - [${{ steps.versions.outputs.stable }} bundled release versions](https://github.com/digital-asset/dpm-assembly/blob/${{ steps.versions.outputs.stable }}/latest/open-source/3.5.yaml)
               - Canton
               - Daml
                 - Codegen
