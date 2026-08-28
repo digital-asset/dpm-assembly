@@ -26,7 +26,7 @@ components:
   upgrade-check:
     image-tag: 3.6
   daml-shell:
-    image-tag: 3.5
+    image-tag: 3.6
   scribe:
     image-tag: 3.6
 assistant: # dpm binary
