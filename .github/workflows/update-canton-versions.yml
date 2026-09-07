@@ -17,6 +17,13 @@ permissions:
 
 jobs:
   update-versions:
+    strategy:
+      fail-fast: false
+      matrix:
+        environment:
+          - devnet
+          - testnet
+          - mainnet
     runs-on: digital-asset-dpm-assembly
     steps:
     - name: Checkout repository
@@ -26,17 +33,32 @@ jobs:
     - uses: ./.github/actions/nix
 
     - name: Determine current Splice version
-      id: splice2
+      id: splice
       uses: ./.github/actions/get-splice-version
       with:
-        environment: testnet
+        environment: ${{ matrix.environment }}
 
     - name: Determine Canton version
-      id: canton2
+      id: canton
       uses: ./.github/actions/get-canton-version
       with:
-        splice-version: ${{ steps.splice2.outputs.splice-version }}
+        splice-version: ${{ steps.splice.outputs.splice-version }}
 
+    - name: Save versions
+      env:
+        ENVIRONMENT: ${{ matrix.environment }}
+        SPLICE_VERSION: ${{ steps.splice.outputs.splice-version }}
+        CANTON_VERSION: ${{ steps.canton.outputs.canton-version }}
+      run: |
+        mkdir -p versions
+        
+        cat > "versions/${ENVIRONMENT}.json" <<EOF
+        {
+          "environment": "${ENVIRONMENT}",
+          "splice_version": "${SPLICE_VERSION}",
+          "canton_version": "${CANTON_VERSION}"
+        }
+        EOF
 
 #    - name: Update 3.5.yaml
 #      shell: bash
