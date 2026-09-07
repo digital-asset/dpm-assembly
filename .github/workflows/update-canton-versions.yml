@@ -1,0 +1,224 @@
+name: Update Canton versions
+
+on:
+  schedule:
+    # Run once a day at 06:00 UTC
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail {0}"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-versions:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Determine current Splice version
+      id: splice
+      run: |
+        set -euo pipefail
+  
+        SPLICE_VERSION="$(
+          curl --fail --silent --show-error \
+            https://docs.dev.global.canton.network.sync.global/info |
+            jq -r '.synchronizer.current.version'
+        )"
+  
+        if [[ -z "${SPLICE_VERSION}" || "${SPLICE_VERSION}" == "null" ]]; then
+          echo "Failed to determine Splice version"
+          exit 1
+        fi
+  
+        echo "Splice version: ${SPLICE_VERSION}"
+        echo "version=${SPLICE_VERSION}" >> "$GITHUB_OUTPUT"
+
+    - name: Determine Canton version from splice canton image
+      id: canton
+      env:
+        SPLICE_VERSION: ${{ steps.splice.outputs.version }}
+      run: |
+        set -euo pipefail
+  
+        IMAGE="ghcr.io/digital-asset/decentralized-canton-sync/docker/canton-participant:${SPLICE_VERSION}"
+  
+        echo "Using image: ${IMAGE}"
+  
+        CANTON_VERSION="$(
+          docker run --rm \
+            --entrypoint=/bin/sh \
+            "${IMAGE}" \
+            -c 'bin/canton --version' |
+          grep '^Canton:' |
+          awk '{print $2}'
+        )"
+  
+        if [[ -z "${CANTON_VERSION}" ]]; then
+          echo "Failed to determine Canton version"
+          exit 1
+        fi
+  
+        echo "Canton version: ${CANTON_VERSION}"
+        echo "version=${CANTON_VERSION}" >> "$GITHUB_OUTPUT"
+
+#    - name: Update 3.5.yaml
+#      shell: bash
+#      env:
+#        SPLICE_VERSION: ${{ steps.splice.outputs.version }}
+#        CANTON_VERSION: ${{ steps.canton.outputs.version }}
+#      run: |
+#        set -euo pipefail
+#
+#        python3 - <<'PY'
+#        import os
+#        import re
+#        from pathlib import Path
+#
+#        path = Path("3.5.yaml")
+#        text = path.read_text()
+#
+#        splice_version = os.environ["SPLICE_VERSION"]
+#        canton_version = os.environ["CANTON_VERSION"]
+#
+#        # Update the top-level version only.
+#        text, count = re.subn(
+#            r'(?m)^version:\s*.*$',
+#            f'version: {splice_version}',
+#            text,
+#            count=1,
+#        )
+#
+#        if count != 1:
+#            raise SystemExit("Could not find top-level version in 3.5.yaml")
+#
+#        # Update canton-open-source version.
+#        pattern = (
+#            r'(?ms)(components:\s*'
+#            r'canton-open-source:\s*'
+#            r'version:\s*)[^\n]+'
+#        )
+#
+#        text, count = re.subn(
+#            pattern,
+#            rf'\g<1>{canton_version}',
+#            text,
+#            count=1,
+#        )
+#
+#        if count != 1:
+#            raise SystemExit(
+#                "Could not find canton-open-source version in 3.5.yaml"
+#            )
+#
+#        path.write_text(text)
+#        PY
+#
+#    - name: Update public-stable-3.5.yaml
+#      shell: bash
+#      env:
+#        SPLICE_VERSION: ${{ steps.splice.outputs.version }}
+#        CANTON_VERSION: ${{ steps.canton.outputs.version }}
+#      run: |
+#        set -euo pipefail
+#
+#        python3 - <<'PY'
+#        import os
+#        import re
+#        from pathlib import Path
+#
+#        path = Path("public-stable-3.5.yaml")
+#        text = path.read_text()
+#
+#        splice_version = os.environ["SPLICE_VERSION"]
+#        canton_version = os.environ["CANTON_VERSION"]
+#
+#        # Update the SDK bundle / docker version.
+#        #
+#        # Match the version belonging to:
+#        #   name: update tags for sdk (devnet)
+#        #
+#        sdk_pattern = (
+#            r'(?ms)'
+#            r'(- name:\s*update tags for sdk \(devnet\).*?'
+#            r'\n\s*version:\s*)[^\n]+'
+#        )
+#
+#        text, count = re.subn(
+#            sdk_pattern,
+#            rf'\g<1>{splice_version}',
+#            text,
+#            count=1,
+#        )
+#
+#        if count != 1:
+#            raise SystemExit(
+#                "Could not find SDK devnet version in public-stable-3.5.yaml"
+#            )
+#
+#        # Update the Canton version.
+#        #
+#        # Match the version belonging to:
+#        #   name: update tags for canton (devnet)
+#        #
+#        canton_pattern = (
+#            r'(?ms)'
+#            r'(- name:\s*update tags for canton \(devnet\).*?'
+#            r'\n\s*version:\s*)[^\n]+'
+#        )
+#
+#        text, count = re.subn(
+#            canton_pattern,
+#            rf'\g<1>{canton_version}',
+#            text,
+#            count=1,
+#        )
+#
+#        if count != 1:
+#            raise SystemExit(
+#                "Could not find Canton devnet version in public-stable-3.5.yaml"
+#            )
+#
+#        path.write_text(text)
+#        PY
+#
+#    - name: Show changes
+#      run: |
+#        git diff -- 3.5.yaml public-stable-3.5.yaml
+#
+#    - name: Create pull request
+#      uses: peter-evans/create-pull-request@v7
+#      with:
+#        token: ${{ secrets.GITHUB_TOKEN }}
+#        branch: automation/update-canton-versions
+#        delete-branch: true
+#        commit-message: "Update Canton versions"
+#        title: "Update Canton versions"
+#        body: |
+#          ## Automated Canton version update
+#
+#          This PR updates the 3.5 release versions based on the current
+#          Splice version reported by the synchronizer.
+#
+#          - Splice version: `${{ steps.splice.outputs.version }}`
+#          - Canton version: `${{ steps.canton.outputs.version }}`
+#
+#          Updated files:
+#
+#          - `3.5.yaml`
+#          - `public-stable-3.5.yaml`
+#
+#          This PR was generated automatically by GitHub Actions.
+#        labels: |
+#          automated
+#          dependencies
+#        author: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+#        committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
