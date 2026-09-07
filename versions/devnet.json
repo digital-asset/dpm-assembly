@@ -1,0 +1,5 @@
+{
+  "environment": "devnet",
+  "splice_version": "0.7.5",
+  "canton_version": "3.5.15"
+}

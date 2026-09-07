@@ -1,0 +1,5 @@
+{
+  "environment": "mainnet",
+  "splice_version": "0.7.3",
+  "canton_version": "3.5.14-snapshot.20260815.19176.0.v65fa04f6"
+}
