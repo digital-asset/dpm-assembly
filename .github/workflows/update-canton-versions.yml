@@ -46,31 +46,10 @@ jobs:
 
     - name: Determine Canton version from splice canton image
       id: canton
-      env:
-        SPLICE_VERSION: ${{ steps.splice.outputs.version }}
-      run: |
-        set -euo pipefail
-  
-        IMAGE="ghcr.io/digital-asset/decentralized-canton-sync/docker/canton-participant:${SPLICE_VERSION}"
-  
-        echo "Using image: ${IMAGE}"
-  
-        CANTON_VERSION="$(
-          docker run --rm \
-            --entrypoint=/bin/sh \
-            "${IMAGE}" \
-            -c 'bin/canton --version' |
-          grep '^Canton:' |
-          awk '{print $2}'
-        )"
-  
-        if [[ -z "${CANTON_VERSION}" ]]; then
-          echo "Failed to determine Canton version"
-          exit 1
-        fi
-  
-        echo "Canton version: ${CANTON_VERSION}"
-        echo "version=${CANTON_VERSION}" >> "$GITHUB_OUTPUT"
+      uses: ./.github/actions/get-canton-version
+      with:
+        splice-version: ${{ steps.splice.outputs.version }}
+
 
 #    - name: Update 3.5.yaml
 #      shell: bash

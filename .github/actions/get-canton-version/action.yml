@@ -1,0 +1,41 @@
+name: Get Canton Version
+description: Get Canton version from the Splice Canton Participant container
+inputs:
+  splice-version:
+    description: splice version
+    required: true
+outputs:
+  canton-version:
+  description: Canton version extracted from the image
+  value: ${{ steps.canton.outputs.version }}
+runs:
+  using: composite
+  steps:
+    - name: gcloud login
+      id: canton
+      env:
+        SPLICE_VERSION: ${{ inputs.splice-version }}
+      run: |
+        set -euo pipefail
+        
+        IMAGE="ghcr.io/digital-asset/decentralized-canton-sync/docker/canton-participant:${SPLICE_VERSION}"
+        
+        echo "Using image: ${IMAGE}"
+        
+        CANTON_VERSION="$(
+          docker run --rm \
+            --entrypoint=/bin/sh \
+            "${IMAGE}" \
+            -c 'bin/canton --version' |
+          grep '^Canton:' |
+          awk '{print $2}'
+        )"
+        
+        if [[ -z "${CANTON_VERSION}" ]]; then
+          echo "Failed to determine Canton version"
+          exit 1
+        fi
+        
+        echo "Canton version: ${CANTON_VERSION}"
+        echo "version=${CANTON_VERSION}" >> "$GITHUB_OUTPUT"
+      shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail {0}"
