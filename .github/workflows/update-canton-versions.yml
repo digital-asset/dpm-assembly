@@ -5,6 +5,7 @@ on:
     # Run once a day at 06:00 UTC
     - cron: "0 6 * * *"
   workflow_dispatch:
+  push:
 
 defaults:
   run:
