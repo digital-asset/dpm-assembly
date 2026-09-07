@@ -6,8 +6,8 @@ inputs:
     required: true
 outputs:
   canton-version:
-  description: Canton version extracted from the image
-  value: ${{ steps.canton.outputs.version }}
+    description: Canton version extracted from the image
+    value: ${{ steps.canton.outputs.version }}
 runs:
   using: composite
   steps:
