@@ -14,7 +14,6 @@ runs:
   steps:
     - name: Determine info URL
       id: environment
-      shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail {0}"
       env:
         ENVIRONMENT: ${{ inputs.environment }}
       run: |
@@ -37,6 +36,7 @@ runs:
             ;;
         esac
         echo "url=${INFO_URL}" >> "$GITHUB_OUTPUT"
+      shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail {0}"
 
     - name: Determine current Splice version
       id: splice
@@ -49,7 +49,7 @@ runs:
           curl --fail --silent --show-error \
             "$INFO_URL" |
             jq -r '.synchronizer.current.version'
-        )
+        )"
 
         if [[ -z "${SPLICE_VERSION}" || "${SPLICE_VERSION}" == "null" ]]; then
           echo "Failed to determine Splice version"
