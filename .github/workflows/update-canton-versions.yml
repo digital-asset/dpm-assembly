@@ -25,24 +25,11 @@ jobs:
         fetch-depth: 0
     - uses: ./.github/actions/nix
 
-    - name: Determine current Splice version
+    - name: Determine Splice version from network
       id: splice
-      run: |
-        set -euo pipefail
-  
-        SPLICE_VERSION="$(
-          curl --fail --silent --show-error \
-            https://docs.dev.global.canton.network.sync.global/info |
-            jq -r '.synchronizer.current.version'
-        )"
-  
-        if [[ -z "${SPLICE_VERSION}" || "${SPLICE_VERSION}" == "null" ]]; then
-          echo "Failed to determine Splice version"
-          exit 1
-        fi
-  
-        echo "Splice version: ${SPLICE_VERSION}"
-        echo "version=${SPLICE_VERSION}" >> "$GITHUB_OUTPUT"
+      uses: ./.github/actions/get-splice-version
+      with:
+        environment: devnet
 
     - name: Determine Canton version from splice canton image
       id: canton

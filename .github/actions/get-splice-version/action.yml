@@ -1,0 +1,61 @@
+name: Get Splice Version
+description: Get Current Splice version based on network
+inputs:
+  environment:
+    description: "Canton environment: devnet, testnet, or mainnet"
+    required: true
+outputs:
+  splice-version:
+    description: Current Splice version
+    value: ${{ steps.splice.outputs.version }}
+
+runs:
+  using: composite
+  steps:
+    - name: Determine info URL
+      id: environment
+      shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail {0}"
+      env:
+        ENVIRONMENT: ${{ inputs.environment }}
+      run: |
+        set -euo pipefail
+        
+        case "$ENVIRONMENT" in
+          devnet)
+            INFO_URL="https://docs.dev.global.canton.network.sync.global/info"
+            ;;
+          testnet)
+            INFO_URL="https://docs.test.global.canton.network.sync.global/info"
+            ;;
+          mainnet)
+            INFO_URL="https://docs.global.canton.network.sync.global/info"
+            ;;
+          *)
+            echo "Invalid environment: $ENVIRONMENT"
+            echo "Expected one of: devnet, testnet, mainnet"
+            exit 1
+            ;;
+        esac
+        echo "url=${INFO_URL}" >> "$GITHUB_OUTPUT"
+
+    - name: Determine current Splice version
+      id: splice
+      env:
+        INFO_URL: ${{ steps.environment.outputs.url }}
+      run: |
+        set -euo pipefail
+
+        SPLICE_VERSION="$(
+          curl --fail --silent --show-error \
+            "$INFO_URL" |
+            jq -r '.synchronizer.current.version'
+        )
+
+        if [[ -z "${SPLICE_VERSION}" || "${SPLICE_VERSION}" == "null" ]]; then
+          echo "Failed to determine Splice version"
+          exit 1
+        fi
+
+        echo "Splice version: ${SPLICE_VERSION}"
+        echo "version=${SPLICE_VERSION}" >> "$GITHUB_OUTPUT"
+      shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail {0}"
