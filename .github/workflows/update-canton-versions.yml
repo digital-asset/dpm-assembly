@@ -25,17 +25,17 @@ jobs:
         fetch-depth: 0
     - uses: ./.github/actions/nix
 
-    - name: Determine Splice version from network
-      id: splice
+    - name: Determine current Splice version
+      id: splice2
       uses: ./.github/actions/get-splice-version
       with:
-        environment: devnet
+        environment: testnet
 
-    - name: Determine Canton version from splice canton image
-      id: canton
+    - name: Determine Canton version
+      id: canton2
       uses: ./.github/actions/get-canton-version
       with:
-        splice-version: ${{ steps.splice.outputs.version }}
+        splice-version: ${{ steps.splice2.outputs.splice-version }}
 
 
 #    - name: Update 3.5.yaml
