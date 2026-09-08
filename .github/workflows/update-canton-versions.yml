@@ -1,0 +1,142 @@
+name: Update Canton versions
+
+on:
+  schedule:
+    # Run twice a day
+    - cron: "0 8,17 * * *"
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail {0}"
+
+env:
+  REGISTRY: 'europe-docker.pkg.dev/da-images/public'
+
+permissions:
+  contents: read
+
+jobs:
+  get-devnet-versions:
+    runs-on: digital-asset-dpm-assembly
+
+    outputs:
+      splice-version: ${{ steps.versions.outputs.splice-version }}
+      canton-version: ${{ steps.versions.outputs.canton-version }}
+      canton-major-minor: ${{ steps.versions.outputs.canton-major-minor }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/nix
+
+      - name: Determine Canton and Splice versions
+        id: versions
+        uses: ./.github/actions/get-splice-canton-versions
+        with:
+          environment: devnet
+
+  get-testnet-versions:
+    runs-on: digital-asset-dpm-assembly
+
+    outputs:
+      splice-version: ${{ steps.versions.outputs.splice-version }}
+      canton-version: ${{ steps.versions.outputs.canton-version }}
+      canton-major-minor: ${{ steps.versions.outputs.canton-major-minor }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/nix
+
+      - name: Determine Canton and Splice versions
+        id: versions
+        uses: ./.github/actions/get-splice-canton-versions
+        with:
+          environment: testnet
+
+  get-mainnet-versions:
+    runs-on: digital-asset-dpm-assembly
+
+    outputs:
+      splice-version: ${{ steps.versions.outputs.splice-version }}
+      canton-version: ${{ steps.versions.outputs.canton-version }}
+      canton-major-minor: ${{ steps.versions.outputs.canton-major-minor }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/nix
+
+      - name: Determine Canton and Splice versions
+        id: versions
+        uses: ./.github/actions/get-splice-canton-versions
+        with:
+          environment: mainnet
+
+  update-artifact-tags:
+    runs-on: digital-asset-dpm-assembly
+    needs:
+      - get-devnet-versions
+      - get-testnet-versions
+      - get-mainnet-versions
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/nix
+
+      - name: Update versions
+        env:
+          DEVNET_SPLICE_VERSION: ${{ needs.get-devnet-versions.outputs.splice-version }}
+          DEVNET_CANTON_VERSION: ${{ needs.get-devnet-versions.outputs.canton-version }}
+
+          TESTNET_SPLICE_VERSION: ${{ needs.get-testnet-versions.outputs.splice-version }}
+          TESTNET_CANTON_VERSION: ${{ needs.get-testnet-versions.outputs.canton-version }}
+
+          MAINNET_SPLICE_VERSION: ${{ needs.get-mainnet-versions.outputs.splice-version }}
+          MAINNET_CANTON_VERSION: ${{ needs.get-mainnet-versions.outputs.canton-version }}
+        run: |
+          echo "Devnet:  ${DEVNET_SPLICE_VERSION} / ${DEVNET_CANTON_VERSION}"
+          echo "Testnet: ${TESTNET_SPLICE_VERSION} / ${TESTNET_CANTON_VERSION}"
+          echo "Mainnet: ${MAINNET_SPLICE_VERSION} / ${MAINNET_CANTON_VERSION}"
+
+          # update your single file here
+
+      - uses: ./.github/actions/gcloud-login
+        with:
+          key: ${{ secrets.DA_IMAGES }}
+
+      # Canton
+      - name: update tags for canton (devnet)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
+          version: ${{ needs.get-devnet-versions.outputs.canton-version }}
+          tags: '[${{ needs.get-devnet-versions.outputs.canton-major-minor }},"devnet"]'
+          registry: ${{ env.REGISTRY }}
+
+      - name: update tags for canton (testnet)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
+          version: ${{ needs.get-testnet-versions.outputs.canton-version }}
+          tags: '["testnet"]'
+          registry: ${{ env.REGISTRY }}
+
+      - name: update tags for canton (mainnet)
+        uses: ./.github/actions/update-tags
+        with:
+          # snapshot docker images cannot be marked as mainnet
+          # artifacts: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
+          artifacts: '["components/canton-open-source"]'
+          version: ${{ needs.get-mainnet-versions.outputs.canton-version }}
+          tags: '["mainnet"]'
+          registry: ${{ env.REGISTRY }}
