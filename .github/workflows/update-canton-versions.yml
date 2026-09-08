@@ -5,6 +5,7 @@ on:
     # Run twice a day
     - cron: "0 8,17 * * *"
   workflow_dispatch:
+  push:
 
 defaults:
   run:
@@ -140,3 +141,13 @@ jobs:
           version: ${{ needs.get-mainnet-versions.outputs.canton-version }}
           tags: '["mainnet"]'
           registry: ${{ env.REGISTRY }}
+
+      - name: update tags for splice dars (devnet)
+        env:
+          VERSION: ${{ needs.get-devnet-versions.outputs.canton-version }}
+          ENVIRONMENT: "devnet"
+          TAG: "devnet"
+          BASE_REPO: "europe-docker.pkg.dev/da-images/playground/dars"
+        run: |
+          ./upload-and-tag-dars.sh
+          ./list_dars_by_tag.sh
