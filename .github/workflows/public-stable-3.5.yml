@@ -241,7 +241,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
-          version: 3.5.7
+          version: 3.5.9
           tags: '["latest","3.5","devnet"]'
           registry: ${{ env.REGISTRY }}
 
@@ -249,7 +249,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
-          version: 3.5.6
+          version: 3.5.8
           tags: '["testnet"]'
           registry: ${{ env.REGISTRY }}
 
@@ -257,7 +257,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
-          version: 3.5.5
+          version: 3.5.7
           tags: '["mainnet"]'
           registry: ${{ env.REGISTRY }}
 
@@ -266,7 +266,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["components/scribe", "docker/participant-query-store", "docker/scribe", "charts/participant-query-store"]'
-          version: 3.5.7
+          version: 3.5.8
           tags: '["3.5","devnet","testnet","mainnet"]'
           registry: ${{ env.REGISTRY }}
 
