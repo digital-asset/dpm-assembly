@@ -88,6 +88,7 @@ for name in "${!versions[@]}"; do
     oras manifest delete --force "${artifact_path}:devnet"
     oras manifest delete --force "${artifact_path}:testnet"
     oras manifest delete --force "${artifact_path}:mainnet"
+    
     oras tag "$artifact_path" "$ENVIRONMENT"
 done
 
