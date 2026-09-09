@@ -145,7 +145,7 @@ jobs:
       - name: 'download dpm'
         run: |
           echo "::group::Starting dpm installation"
-          ./.github/get-dpm.sh "${REGISTRY}" main
+          ./.github/get-dpm.sh "${REGISTRY}" latest
           echo "::endgroup::"
 
       - name: update tags for splice dars (devnet)
