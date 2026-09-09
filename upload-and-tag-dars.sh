@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 : "${VERSION:?VERSION environment variable is required}"
-: "${ENVIRONMENT:?ENVIRONMENT environment variable is required}"
+: "${TAG:?TAG environment variable is required}"
 
 URL="https://github.com/digital-asset/decentralized-canton-sync/releases/download/v${VERSION}/${VERSION}_splice-node.tar.gz"
 ARCHIVE="${VERSION}_splice-node.tar.gz"
@@ -30,7 +30,7 @@ process_dar() {
   filename="$(basename "$dar" .dar)"
   version="${filename##*-}"
   artifact="${filename%-"$version"}"
-  tag="${ENVIRONMENT}"
+  tag="${TAG}"
 
   if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     echo "Skipping $dar: version '$version' is not valid semver"
@@ -45,7 +45,7 @@ process_dar() {
 }
 
 export -f process_dar
-export ENVIRONMENT
+export TAG
 
 find "$DARS_DIR" -type f -name '*.dar' -print0 |
   # run in parallel as there are many files to process
@@ -84,8 +84,8 @@ for name in "${!versions[@]}"; do
 
     echo "latest: $name -> $greatest ($dar)"
     artifact_path="europe-docker.pkg.dev/da-images/playground/dars/${name}:${greatest}"
-    echo "Tagging $artifact_path version $greatest tag $ENVIRONMENT"
-    oras tag "$artifact_path" "$ENVIRONMENT"
+    echo "Tagging $artifact_path version $greatest tag $TAG"
+    oras tag "$artifact_path" "$TAG"
 done
 
 echo "Done."
