@@ -40,11 +40,6 @@ process_dar() {
   echo "Uploading $artifact version $version"
   artifact_path="europe-docker.pkg.dev/da-images/playground/dars/${artifact}:${version}"
 
-  #clear out prior tags
-  oras manifest delete --force "${artifact_path}:devnet" || true
-  oras manifest delete --force "${artifact_path}:testnet" || true
-  oras manifest delete --force "${artifact_path}:mainnet" || true
-
   dpm publish dar "oci://${artifact_path}" -f "$dar" \
     --license ./splice-node/LICENSE
 }
