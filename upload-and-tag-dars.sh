@@ -42,10 +42,6 @@ process_dar() {
 
   dpm publish dar "oci://${artifact_path}" -f "$dar" \
     --license ./splice-node/LICENSE
-#    --extra-tags "${tag}"
-
-  echo "Tagging $artifact version $version tag $tag"
-  oras tag "$artifact_path" "$tag"
 }
 
 export -f process_dar
@@ -77,6 +73,7 @@ tag_greatest() {
     ' |
     while IFS=$'\t' read -r name version dar; do
       artifact_path="europe-docker.pkg.dev/da-images/playground/dars/${name}:${version}"
+      echo "Tagging $artifact version $version tag $tag"
       oras tag "$artifact_path" "$tag"
     done
 }
