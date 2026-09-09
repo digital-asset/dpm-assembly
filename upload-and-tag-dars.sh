@@ -51,34 +51,41 @@ find "$DARS_DIR" -type f -name '*.dar' -print0 |
   # run in parallel as there are many files to process
   xargs -0 -n 1 -P 16 bash -c 'process_dar "$1"' _
 
-tag_greatest() {
-  # Find the highest version for each artifact and tag it latest
-  find "$DARS_DIR" -type f -name '*.dar' -print0 |
-    while IFS= read -r -d '' dar; do
-      file=${dar##*/}
-      if [[ $file =~ ^(.+)-([0-9]+\.[0-9]+\.[0-9]+)\.dar$ ]]; then
-        printf '%s\t%s\t%s\n' "${BASH_REMATCH[1]}" "${BASH_REMATCH[2]}" "$dar"
-      fi
-    done |
-    sort -t$'\t' -k1,1 -k2,2V |
-    awk -F'\t' '
-      $1 != prev {
-        if (prev != "") print last
-        prev = $1
-      }
-      { last = $0 }
-      END {
-        if (prev != "") print last
-      }
-    ' |
-    while IFS=$'\t' read -r name version dar; do
-      artifact_path="europe-docker.pkg.dev/da-images/playground/dars/${name}:${version}"
-      echo "Tagging $artifact version $version tag $tag"
-      oras tag "$artifact_path" "$tag"
-    done
+find_greatest_semver() {
+    [ $# -eq 0 ] && return 1
+    printf '%s\n' "$@" | sort -V | tail -n 1
 }
 
-tag_greatest
+declare -A versions
+declare -A dar_paths
+
+while IFS= read -r -d '' dar; do
+    file=${dar##*/}
+
+    # Only match semantic versions: foo-1.2.3.dar
+    if [[ "$file" =~ ^(.+)-([0-9]+\.[0-9]+\.[0-9]+)\.dar$ ]]; then
+        name="${BASH_REMATCH[1]}"
+        version="${BASH_REMATCH[2]}"
+
+        # Gather versions for this artifact
+        versions["$name"]+="${version} "
+
+        # Remember the DAR path for this artifact/version
+        dar_paths["$name|$version"]="$dar"
+    fi
+done < <(find "$DARS_DIR" -type f -name '*.dar' -print0)
+
+# Find greatest version for each artifact and tag it latest
+for name in "${!versions[@]}"; do
+    read -ra version_list <<< "${versions[$name]}"
+
+    greatest=$(find_greatest_semver "${version_list[@]}")
+    dar="${dar_paths["$name|$greatest"]}"
+
+    echo "latest: $name -> $greatest ($dar)"
+    artifact_path="europe-docker.pkg.dev/da-images/playground/dars/${name}:${greatest}"
+    oras tag "$artifact_path" "$tag"
+done
 
 echo "Done."
 
