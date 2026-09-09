@@ -150,7 +150,8 @@ jobs:
 
       - name: update tags for splice dars (devnet)
         env:
-          VERSION: ${{ needs.get-devnet-versions.outputs.splice-version }}
+#          VERSION: ${{ needs.get-devnet-versions.outputs.splice-version }}
+          VERSION: "0.8.0"
           ENVIRONMENT: "devnet"
           TAG: "devnet"
           BASE_REPO: "europe-docker.pkg.dev/da-images/playground/dars"
