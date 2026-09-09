@@ -158,7 +158,7 @@ jobs:
           ./upload-and-tag-dars.sh
           ./list_dars_by_tag.sh
 
-      - name: update tags for splice dars (devnet)
+      - name: update tags for splice dars (testnet)
         env:
           VERSION: ${{ needs.get-testnet-versions.outputs.splice-version }}
           ENVIRONMENT: "testnet"
@@ -168,7 +168,7 @@ jobs:
           ./upload-and-tag-dars.sh
           ./list_dars_by_tag.sh
 
-      - name: update tags for splice dars (devnet)
+      - name: update tags for splice dars (mainnet)
         env:
           VERSION: ${{ needs.get-mainnet-versions.outputs.splice-version }}
           ENVIRONMENT: "mainnet"
