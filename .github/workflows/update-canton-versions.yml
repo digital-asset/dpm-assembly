@@ -157,3 +157,23 @@ jobs:
         run: |
           ./upload-and-tag-dars.sh
           ./list_dars_by_tag.sh
+
+      - name: update tags for splice dars (devnet)
+        env:
+          VERSION: ${{ needs.get-testnet-versions.outputs.splice-version }}
+          ENVIRONMENT: "testnet"
+          TAG: "testnet"
+          BASE_REPO: "europe-docker.pkg.dev/da-images/playground/dars"
+        run: |
+          ./upload-and-tag-dars.sh
+          ./list_dars_by_tag.sh
+
+      - name: update tags for splice dars (devnet)
+        env:
+          VERSION: ${{ needs.get-mainnet-versions.outputs.splice-version }}
+          ENVIRONMENT: "mainnet"
+          TAG: "mainnet"
+          BASE_REPO: "europe-docker.pkg.dev/da-images/playground/dars"
+        run: |
+          ./upload-and-tag-dars.sh
+          ./list_dars_by_tag.sh

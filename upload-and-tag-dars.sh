@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euox pipefail
+set -euo pipefail
 : "${VERSION:?VERSION environment variable is required}"
 : "${ENVIRONMENT:?ENVIRONMENT environment variable is required}"
 
@@ -84,6 +84,7 @@ for name in "${!versions[@]}"; do
 
     echo "latest: $name -> $greatest ($dar)"
     artifact_path="europe-docker.pkg.dev/da-images/playground/dars/${name}:${greatest}"
+    echo "Tagging $artifact_path version $greatest tag $tag"
     oras tag "$artifact_path" "$tag"
 done
 
