@@ -84,8 +84,8 @@ for name in "${!versions[@]}"; do
 
     echo "latest: $name -> $greatest ($dar)"
     artifact_path="europe-docker.pkg.dev/da-images/playground/dars/${name}:${greatest}"
-    echo "Tagging $artifact_path version $greatest tag $tag"
-    oras tag "$artifact_path" "$tag"
+    echo "Tagging $artifact_path version $greatest tag $ENVIRONMENT"
+    oras tag "$artifact_path" "$ENVIRONMENT"
 done
 
 echo "Done."
