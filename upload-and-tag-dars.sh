@@ -40,6 +40,11 @@ process_dar() {
   echo "Uploading $artifact version $version"
   artifact_path="europe-docker.pkg.dev/da-images/playground/dars/${artifact}:${version}"
 
+  #clear out prior tags
+  oras manifest delete --force "${artifact_path}:devnet" || true
+  oras manifest delete --force "${artifact_path}:testnet" || true
+  oras manifest delete --force "${artifact_path}:mainnet" || true
+
   dpm publish dar "oci://${artifact_path}" -f "$dar" \
     --license ./splice-node/LICENSE
 }
@@ -85,10 +90,6 @@ for name in "${!versions[@]}"; do
     echo "latest: $name -> $greatest ($dar)"
     artifact_path="europe-docker.pkg.dev/da-images/playground/dars/${name}:${greatest}"
     echo "Tagging $artifact_path version $greatest tag $ENVIRONMENT"
-    oras manifest delete --force "${artifact_path}:devnet"
-    oras manifest delete --force "${artifact_path}:testnet"
-    oras manifest delete --force "${artifact_path}:mainnet"
-    
     oras tag "$artifact_path" "$ENVIRONMENT"
 done
 
