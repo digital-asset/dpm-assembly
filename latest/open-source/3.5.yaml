@@ -1,9 +1,9 @@
 # 3.5 release
 edition: open-source
-version: 3.5.8
+version: 3.5.10
 components:
   canton-open-source:
-    version: 3.5.15
+    version: 3.5.17
   codegen:
     version: 3.5.2
   daml-new:
@@ -31,7 +31,7 @@ components:
   upgrade-check:
     version: 3.5.2
 assistant:
-  version: 1.0.21
+  version: 1.0.22
   platforms:
     - windows/amd64
     - linux/amd64
