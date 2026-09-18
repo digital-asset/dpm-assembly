@@ -84,13 +84,15 @@ wait_for_output() {
 }
 
 wait_for_canton() {
-  local host="${1:-127.0.0.1:6865}"
+  local host="${1:-localhost:6865}"
   local timeout="${2:-120}"
 
   for ((i = 0; i < timeout; i++)); do
-    if grpcurl -plaintext "$host" \
+    if status="$(
+      grpcurl -plaintext -format json "$host" \
         grpc.health.v1.Health/Check \
-         >/dev/null 2>&1; then
+        2>/dev/null
+    )" && [[ "$(jq -r '.status // empty' <<<"$status")" == "SERVING" ]]; then
       echo "Canton is ready." >&3
       return 0
     fi
@@ -205,7 +207,9 @@ setup_project() {
   setup_project
   dpm build --all
   cd test
-  coproc SANDBOX (dpm sandbox)
+  coproc SANDBOX { dpm sandbox; }
+  SANDBOX_PID=$SANDBOX_PID
+
   bats::on_failure() {
     kill_and_wait "Sandbox" $SANDBOX_PID
   }
