@@ -207,9 +207,7 @@ setup_project() {
   setup_project
   dpm build --all
   cd test
-  coproc SANDBOX { dpm sandbox; }
-  SANDBOX_PID=$SANDBOX_PID
-
+  coproc SANDBOX (dpm sandbox)
   bats::on_failure() {
     kill_and_wait "Sandbox" $SANDBOX_PID
   }

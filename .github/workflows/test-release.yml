@@ -127,6 +127,7 @@ jobs:
         shell: bash
 
       - name: Verify Installation
+        shell: bash
         run: grpcurl --version
 
       - name: Uptick versions
