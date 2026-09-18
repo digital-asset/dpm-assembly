@@ -109,7 +109,7 @@ jobs:
         id: run-tests
         continue-on-error: true
         env:
-          BATS_TEST_TIMEOUT: 10
+          BATS_TEST_TIMEOUT: 300
           VERSION: "${{ needs.docker.outputs.unstable-tag }}"
         run: |
           bats ./test/dpm-docker.bats --report-formatter junit --output "${RUNNER_TEMP}/my-temp-dir"

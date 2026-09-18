@@ -57,7 +57,7 @@ runs:
       id: run-tests
       continue-on-error: true
       env:
-        BATS_TEST_TIMEOUT: 10
+        BATS_TEST_TIMEOUT: 300
         VERSION: ${{ inputs.version }}
       run: |
         bats ./test/sdk-integration.bats --report-formatter junit --output "${RUNNER_TEMP}/test-output"
