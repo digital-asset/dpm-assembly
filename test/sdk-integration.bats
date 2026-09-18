@@ -259,7 +259,7 @@ setup_project() {
   party=$(curl -d '{"partyIdHint":"Alice"}' http://localhost:6864/v2/parties | jq -r '.partyDetails.party')
 
   # Run the codegen
-  mvn compile exec:java@run-skeleton-java -Dparty=$party >&3
+  mvn --no-transfer-progress compile exec:java@run-skeleton-java -Dparty=$party >&3
   echo "Finished mvn" >&3
 
   kill_and_wait "Sandbox" $SANDBOX_PID
