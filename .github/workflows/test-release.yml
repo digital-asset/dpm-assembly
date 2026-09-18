@@ -14,7 +14,7 @@ jobs:
     runs-on: digital-asset-dpm-assembly
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
       - uses: ./.github/actions/nix
@@ -37,7 +37,7 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
       - name: Install newer bash
@@ -68,7 +68,7 @@ jobs:
       ORAS_VERSION: 1.3.0
       BATS_SHA: 713504bc0224a19b3d7c7958c18dc07f64f54b44 # 1.12.0 - matching the nix/bats.nix derivation version
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
       # Nix.source is required on macos and linux, avoid conditional logic everywhere by faking one for windows.
@@ -114,6 +114,22 @@ jobs:
           cd -
           rm -rf "$clone_dir"
         shell: bash
+
+      - name: Install grpcurl
+        run: |
+          download_dir=$(mktemp -d)
+          cd "$download_dir"
+          curl -L https://github.com/fullstorydev/grpcurl/releases/download/v1.9.3/grpcurl_1.9.3_windows_x86_64.zip --output grpcurl.zip
+          unzip grpcurl.zip -d "${HOME}/grpcurl"
+          grpcurl_bin="${HOME}/grpcurl"
+          export PATH="${grpcurl_bin}:${PATH}"
+          echo "PATH=${grpcurl_bin}:${PATH}" >> "${GITHUB_ENV}"
+        shell: bash
+
+      - name: Verify Installation
+        shell: bash
+        run: grpcurl --version
+
       - name: Uptick versions
         run: |
           version_tag="${{ inputs.version-tag }}"

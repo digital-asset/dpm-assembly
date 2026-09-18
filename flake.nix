@@ -14,6 +14,7 @@
             pkgs.actionlint
             pkgs.bash
             pkgs.curl
+            pkgs.grpcurl
             pkgs.gh
             pkgs.go-jsonnet
             pkgs.google-cloud-sdk

@@ -54,15 +54,28 @@ runs:
       shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail $0" "{0}"
 
     - name: Run integration tests
+      id: run-tests
+      continue-on-error: true
+      env:
+        BATS_TEST_TIMEOUT: 300
+        VERSION: ${{ inputs.version }}
       run: |
-        VERSION=${{ inputs.version }} bats ./test/sdk-integration.bats --report-formatter junit --output "${RUNNER_TEMP}/test-output"
+        bats ./test/sdk-integration.bats --report-formatter junit --output "${RUNNER_TEMP}/test-output"
       shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail $0" "{0}"
 
     - name: Test Report
-      uses: dorny/test-reporter@fe45e9537387dac839af0d33ba56eed8e24189e8 # v2.3.0
+      uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3.0.0
+      if: always() # ensures this test always runs even if test fails
       with:
         name: docker tests
         path: ${{ runner.temp }}/test-output/*.xml
+        path-replace-backslashes: 'true'
         reporter: java-junit
-        fail-on-empty: false
+        fail-on-empty: 'false'
+        fail-on-error: 'false'
         max-annotations: 0 # This uses `git ls-files` which windows doesn't like
+
+    - name: Fail workflow if tests failed
+      if: steps.run-tests.outcome == 'failure'
+      run: exit 1
+      shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail $0" "{0}"

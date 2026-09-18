@@ -83,6 +83,27 @@ wait_for_output() {
   echo "Found expectated output" >&3
 }
 
+wait_for_canton() {
+  local host="${1:-localhost:6865}"
+  local timeout="${2:-120}"
+
+  for ((i = 0; i < timeout; i++)); do
+    if status="$(
+      grpcurl -plaintext -format json "$host" \
+        grpc.health.v1.Health/Check \
+        2>/dev/null
+    )" && [[ "$(jq -r '.status // empty' <<<"$status")" == "SERVING" ]]; then
+      echo "Canton is ready." >&3
+      return 0
+    fi
+
+    sleep 1
+  done
+
+  echo "Canton did not become ready within ${timeout}s" >&3
+  return 1
+}
+
 write_to_input() {
   local handle=$1
   local message=$2
@@ -91,22 +112,22 @@ write_to_input() {
 }
 
 @test "dpm sandbox | can be started" {
-  coproc SANDBOX (dpm sandbox --debug)
+  coproc SANDBOX (dpm sandbox)
   bats::on_failure() {
     kill_and_wait "Sandbox" $SANDBOX_PID
   }
 
-  wait_for_output ${SANDBOX[0]} "Canton sandbox is ready."
+  wait_for_canton
   kill_and_wait "Sandbox" $SANDBOX_PID
 }
 
 @test "dpm canton-console | can connect to sandbox" {
-  coproc SANDBOX (dpm sandbox --debug)
+  coproc SANDBOX (dpm sandbox)
   bats::on_failure() {
     kill_and_wait "Sandbox" $SANDBOX_PID
   }
 
-  wait_for_output ${SANDBOX[0]} "Canton sandbox is ready."
+  wait_for_canton
 
   coproc CONSOLE (dpm canton-console --no-tty)
   bats::on_failure() {
@@ -186,12 +207,13 @@ setup_project() {
   setup_project
   dpm build --all
   cd test
-  coproc SANDBOX (dpm sandbox --debug)
+  coproc SANDBOX (dpm sandbox)
   bats::on_failure() {
     kill_and_wait "Sandbox" $SANDBOX_PID
   }
 
-  wait_for_output ${SANDBOX[0]} "Canton sandbox is ready."
+  wait_for_canton
+
   # If any tests fail, dpm script gives non-zero exit, so test will fail
   echo "Running script" >&3
   dpm script --dar .daml/dist/myproject-test-1.0.0.dar --ledger-host localhost --ledger-port 6865 --all --upload-dar=yes >&3
@@ -228,11 +250,11 @@ setup_project() {
   find . -name pom.xml -exec sed -i -e 's/__DAML_VERSION__/'$daml_version'/g' {} \;
 
   # Start up canton
-  coproc SANDBOX (dpm sandbox --debug)
+  coproc SANDBOX (dpm sandbox)
   bats::on_failure() {
     kill_and_wait "Sandbox" $SANDBOX_PID
   }
-  wait_for_output ${SANDBOX[0]} "Canton sandbox is ready."
+  wait_for_canton
 
   # Upload the package
   curl --data-binary @.daml/dist/myproject-main-1.0.0.dar http://localhost:6864/v2/packages
@@ -240,7 +262,7 @@ setup_project() {
   party=$(curl -d '{"partyIdHint":"Alice"}' http://localhost:6864/v2/parties | jq -r '.partyDetails.party')
 
   # Run the codegen
-  mvn compile exec:java@run-skeleton-java -Dparty=$party >&3
+  mvn --no-transfer-progress compile exec:java@run-skeleton-java -Dparty=$party >&3
   echo "Finished mvn" >&3
 
   kill_and_wait "Sandbox" $SANDBOX_PID
@@ -259,11 +281,11 @@ setup_project() {
   dpm codegen-js -o js/js-generated ./.daml/dist/myproject-main-1.0.0.dar
 
   # Start up canton
-  coproc SANDBOX (dpm sandbox --debug)
+  coproc SANDBOX (dpm sandbox)
   bats::on_failure() {
     kill_and_wait "Sandbox" $SANDBOX_PID
   }
-  wait_for_output ${SANDBOX[0]} "Canton sandbox is ready."
+  wait_for_canton
 
   # Upload the package
   curl --data-binary @.daml/dist/myproject-main-1.0.0.dar http://localhost:6864/v2/packages
@@ -305,11 +327,11 @@ setup_project() {
   cd main
 
   # Start up canton
-  coproc SANDBOX (dpm sandbox --debug)
+  coproc SANDBOX (dpm sandbox)
   bats::on_failure() {
     kill_and_wait "Sandbox" $SANDBOX_PID
   }
-  wait_for_output ${SANDBOX[0]} "Canton sandbox is ready."
+  wait_for_canton
 
   # Upload the package
   curl --data-binary @.daml/dist/myproject-main-1.0.0.dar http://localhost:6864/v2/packages
