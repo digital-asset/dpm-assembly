@@ -107,7 +107,11 @@ jobs:
 
       - name: Run Bats tests
         id: run-tests
-        run: VERSION="${{ needs.docker.outputs.unstable-tag }}" bats ./test/dpm-docker.bats --report-formatter junit --output "${RUNNER_TEMP}/my-temp-dir"
+        env:
+          BATS_TEST_TIMEOUT: 10
+          VERSION: "${{ needs.docker.outputs.unstable-tag }}"
+        run: |
+          bats ./test/dpm-docker.bats --report-formatter junit --output "${RUNNER_TEMP}/my-temp-dir"
 
       - name: Test Report
         if: always() #always gather the test results even if the tests fail

@@ -55,8 +55,11 @@ runs:
 
     - name: Run integration tests
       id: run-tests
+      env:
+        BATS_TEST_TIMEOUT: 10
+        VERSION: ${{ inputs.version }}
       run: |
-        VERSION=${{ inputs.version }} bats ./test/sdk-integration.bats --report-formatter junit --output "${RUNNER_TEMP}/test-output"
+        bats ./test/sdk-integration.bats --report-formatter junit --output "${RUNNER_TEMP}/test-output"
       shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail $0" "{0}"
 
     - name: Test Report
