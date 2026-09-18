@@ -205,16 +205,25 @@ setup_project() {
   setup_project
   dpm build --all
   cd test
+
+  local dar=".daml/dist/myproject-test-1.0.0.dar"
+
   coproc SANDBOX (dpm sandbox)
   bats::on_failure() {
-    kill_and_wait "Sandbox" $SANDBOX_PID
+    kill_and_wait "Sandbox" "$SANDBOX_PID"
   }
 
   wait_for_canton
+
   # If any tests fail, dpm script gives non-zero exit, so test will fail
-  echo "Running script" >&3
-  dpm script --dar .daml/dist/myproject-test-1.0.0.dar --ledger-host localhost --ledger-port 6865 --all --upload-dar=yes >&3
-  echo "ran script, killing sandbox" >&3
+  echo "Running dpm script against Canton" >&3
+  dpm script \
+    --dar "$dar" \
+    --ledger-host localhost \
+    --ledger-port 6865 \
+    --all \
+    --upload-dar=yes >&3
+
   kill_and_wait "Sandbox" $SANDBOX_PID
 }
 
