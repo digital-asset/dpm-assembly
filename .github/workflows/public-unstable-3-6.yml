@@ -121,7 +121,8 @@ jobs:
           name: docker tests
           path: ${{ runner.temp }}/my-temp-dir/*.xml
           reporter: java-junit
-          fail-on-empty: false
+          fail-on-empty: 'true'
+          fail-on-error: 'false'
 
       - name: Fail workflow if tests failed
         if: steps.run-tests.outcome == 'failure'
