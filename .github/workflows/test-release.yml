@@ -124,6 +124,7 @@ jobs:
           grpcurl_bin="${HOME}/grpcurl"
           export PATH="${grpcurl_bin}:${PATH}"
           echo "PATH=${grpcurl_bin}:${PATH}" >> "${GITHUB_ENV}"
+        shell: bash
 
       - name: Verify Installation
         run: grpcurl --version
