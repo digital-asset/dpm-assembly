@@ -106,15 +106,22 @@ jobs:
           echo "Temp dir: $RUNNER_TEMP/my-temp-dir"
 
       - name: Run Bats tests
+        id: run-tests
         run: VERSION="${{ needs.docker.outputs.unstable-tag }}" bats ./test/dpm-docker.bats --report-formatter junit --output "${RUNNER_TEMP}/my-temp-dir"
 
       - name: Test Report
+        if: always() #always gather the test results even if the tests fail
         uses: dorny/test-reporter@fe45e9537387dac839af0d33ba56eed8e24189e8 # v2.3.0
         with:
           name: docker tests
           path: ${{ runner.temp }}/my-temp-dir/*.xml
           reporter: java-junit
           fail-on-empty: false
+
+      - name: Fail workflow if tests failed
+        if: steps.run-tests.outcome == 'failure'
+        run: exit 1
+        shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail $0" "{0}"
 
   test-windows-archive-installation:
     runs-on: windows-latest
