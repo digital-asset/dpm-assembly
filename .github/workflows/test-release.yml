@@ -116,7 +116,14 @@ jobs:
         shell: bash
 
       - name: Install grpcurl
-        run: winget install -e --id fullstorydev.grpcurl --disable-interactivity --accept-source-agreements --accept-package-agreements
+        run: |
+          download_dir=$(mktemp -d)
+          cd "$download_dir"
+          curl -L https://github.com/fullstorydev/grpcurl/releases/latest/download/grpcurl_1.9.3_windows_x86_64.zip --output grpcurl.zip
+          unzip grpcurl.zip -d "${HOME}/grpcurl"
+          grpcurl_bin="${HOME}/grpcurl"
+          export PATH="${grpcurl_bin}:${PATH}"
+          echo "PATH=${grpcurl_bin}:${PATH}" >> "${GITHUB_ENV}"
 
       - name: Verify Installation
         run: grpcurl --version
