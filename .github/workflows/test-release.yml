@@ -114,11 +114,15 @@ jobs:
           cd -
           rm -rf "$clone_dir"
         shell: bash
+
       - name: Install grpcurl
         run: choco install grpcurl -y
+        shell: powershell
 
       - name: Verify installation
         run: grpcurl -version
+        shell: bash
+
       - name: Uptick versions
         run: |
           version_tag="${{ inputs.version-tag }}"
