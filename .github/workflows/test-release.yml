@@ -119,7 +119,7 @@ jobs:
         run: |
           download_dir=$(mktemp -d)
           cd "$download_dir"
-          curl -L https://github.com/fullstorydev/grpcurl/releases/latest/download/grpcurl_1.9.3_windows_x86_64.zip --output grpcurl.zip
+          curl -L https://github.com/fullstorydev/grpcurl/releases/download/v1.9.3/grpcurl_1.9.3_windows_x86_64.zip --output grpcurl.zip
           unzip grpcurl.zip -d "${HOME}/grpcurl"
           grpcurl_bin="${HOME}/grpcurl"
           export PATH="${grpcurl_bin}:${PATH}"
