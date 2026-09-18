@@ -69,6 +69,7 @@ runs:
       with:
         name: docker tests
         path: ${{ runner.temp }}/test-output/*.xml
+        path-replace-backslashes: 'true'
         reporter: java-junit
         fail-on-empty: 'true'
         fail-on-error: 'false'
