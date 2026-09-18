@@ -84,13 +84,13 @@ wait_for_output() {
 }
 
 wait_for_canton() {
-  local host="${1:-localhost:6865}"
-  local timeout="${2:-60}"
+  local host="${1:-127.0.0.1:6865}"
+  local timeout="${2:-120}"
 
   for ((i = 0; i < timeout; i++)); do
     if grpcurl -plaintext "$host" \
         grpc.health.v1.Health/Check \
-        -d '{"service":""}' >/dev/null 2>&1; then
+         >/dev/null 2>&1; then
       echo "Canton is ready." >&3
       return 0
     fi
