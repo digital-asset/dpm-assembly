@@ -91,7 +91,7 @@ write_to_input() {
 }
 
 @test "dpm sandbox | can be started" {
-  coproc SANDBOX (dpm sandbox --debug)
+  coproc SANDBOX (dpm sandbox)
   bats::on_failure() {
     kill_and_wait "Sandbox" $SANDBOX_PID
   }
@@ -101,7 +101,7 @@ write_to_input() {
 }
 
 @test "dpm canton-console | can connect to sandbox" {
-  coproc SANDBOX (dpm sandbox --debug)
+  coproc SANDBOX (dpm sandbox)
   bats::on_failure() {
     kill_and_wait "Sandbox" $SANDBOX_PID
   }
@@ -186,7 +186,7 @@ setup_project() {
   setup_project
   dpm build --all
   cd test
-  coproc SANDBOX (dpm sandbox --debug)
+  coproc SANDBOX (dpm sandbox)
   bats::on_failure() {
     kill_and_wait "Sandbox" $SANDBOX_PID
   }
@@ -228,7 +228,7 @@ setup_project() {
   find . -name pom.xml -exec sed -i -e 's/__DAML_VERSION__/'$daml_version'/g' {} \;
 
   # Start up canton
-  coproc SANDBOX (dpm sandbox --debug)
+  coproc SANDBOX (dpm sandbox)
   bats::on_failure() {
     kill_and_wait "Sandbox" $SANDBOX_PID
   }
@@ -259,7 +259,7 @@ setup_project() {
   dpm codegen-js -o js/js-generated ./.daml/dist/myproject-main-1.0.0.dar
 
   # Start up canton
-  coproc SANDBOX (dpm sandbox --debug)
+  coproc SANDBOX (dpm sandbox)
   bats::on_failure() {
     kill_and_wait "Sandbox" $SANDBOX_PID
   }
@@ -305,7 +305,7 @@ setup_project() {
   cd main
 
   # Start up canton
-  coproc SANDBOX (dpm sandbox --debug)
+  coproc SANDBOX (dpm sandbox)
   bats::on_failure() {
     kill_and_wait "Sandbox" $SANDBOX_PID
   }
