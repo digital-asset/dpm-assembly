@@ -18,6 +18,9 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ./.github/actions/nix
+      - uses: ./.github/actions/gcloud-login
+        with:
+          key: ${{ secrets.DA_IMAGES }}
       - name: Uptick versions
         run: |
           version_tag="${{ inputs.version-tag }}"
@@ -46,6 +49,9 @@ jobs:
         shell: bash
       - uses: cachix/install-nix-action@08dcb3a5e62fa31e2da3d490afc4176ef55ecd72 # v30
       - uses: ./.github/actions/nix
+      - uses: ./.github/actions/gcloud-login
+        with:
+          key: ${{ secrets.DA_IMAGES }}
       - name: Uptick versions
         run: |
           version_tag="${{ inputs.version-tag }}"
