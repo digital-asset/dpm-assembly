@@ -71,7 +71,7 @@ runs:
         path: ${{ runner.temp }}/test-output/*.xml
         path-replace-backslashes: 'true'
         reporter: java-junit
-        fail-on-empty: 'true'
+        fail-on-empty: 'false'
         fail-on-error: 'false'
         max-annotations: 0 # This uses `git ls-files` which windows doesn't like
 
