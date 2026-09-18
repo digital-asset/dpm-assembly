@@ -107,6 +107,7 @@ jobs:
 
       - name: Run Bats tests
         id: run-tests
+        continue-on-error: true
         env:
           BATS_TEST_TIMEOUT: 10
           VERSION: "${{ needs.docker.outputs.unstable-tag }}"

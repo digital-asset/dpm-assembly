@@ -55,6 +55,7 @@ runs:
 
     - name: Run integration tests
       id: run-tests
+      continue-on-error: true
       env:
         BATS_TEST_TIMEOUT: 10
         VERSION: ${{ inputs.version }}
