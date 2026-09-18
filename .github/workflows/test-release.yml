@@ -116,12 +116,10 @@ jobs:
         shell: bash
 
       - name: Install grpcurl
-        run: choco install grpcurl -y
-        shell: powershell
+        run: winget install -e --id fullstorydev.grpcurl --disable-interactivity --accept-source-agreements --accept-package-agreements
 
-      - name: Verify installation
-        run: grpcurl -version
-        shell: bash
+      - name: Verify Installation
+        run: grpcurl --version
 
       - name: Uptick versions
         run: |
