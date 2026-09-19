@@ -2,11 +2,11 @@ edition: open-source
 version: 3.6.0-snapshot-weekly
 components:
   canton-open-source:
-    version: 3.6.0-snapshot.20260902.20200.0.v90a37b4c
+    version: 3.6.0-snapshot.20260916.20283.0.v773237e8
   codegen:
-    version: 3.6.0-snapshot.20260828.14792.0.vcb928c69
+    version: 3.6.0-snapshot.20260915.14804.0.v53478765
   daml-new:
-    version: 3.6.0-snapshot.20260828.14792.0.vcb928c69
+    version: 3.6.0-snapshot.20260915.14804.0.v53478765
     platforms:
       - linux/amd64
       - linux/arm64
@@ -14,11 +14,11 @@ components:
       - darwin/arm64
       - windows/amd64
   daml-script:
-    version: 3.6.0-snapshot.20260828.14792.0.vcb928c69
+    version: 3.6.0-snapshot.20260915.14804.0.v53478765
   daml-shell:
-    version: 3.5.0-snapshot.20260901.1.53.v39007db
+    version: 3.5.0-snapshot.20260907.1.64.vf02ff34
   damlc:
-    version: 3.6.0-snapshot.20260828.14792.0.vcb928c69
+    version: 3.6.0-snapshot.20260915.14804.0.v53478765
     platforms:
       - linux/amd64
       - linux/arm64
@@ -26,11 +26,11 @@ components:
       - darwin/arm64
       - windows/amd64
   scribe:
-    version: 3.6.0-snapshot.20260902.1.138.va219149
+    version: 3.6.0-snapshot.20260916.1.235.v284fe6a
   upgrade-check:
-    version: 3.6.0-snapshot.20260828.14792.0.vcb928c69
+    version: 3.6.0-snapshot.20260915.14804.0.v53478765
 assistant: # dpm binary
-  version: 1.0.22-snapshot-20260817.193.0.v2017ab5
+  version: 1.0.22-snapshot-20260909.194.0.vb65a815
   platforms:
     - windows/amd64
     - linux/amd64
