@@ -5,6 +5,7 @@ on:
     # Run twice a day
     - cron: "0 8,17 * * *"
   workflow_dispatch:
+  push:
 
 defaults:
   run:
@@ -140,3 +141,37 @@ jobs:
           version: ${{ needs.get-mainnet-versions.outputs.canton-version }}
           tags: '["mainnet"]'
           registry: ${{ env.REGISTRY }}
+
+      - name: 'download dpm'
+        run: |
+          echo "::group::Starting dpm installation"
+          ./.github/get-dpm.sh "${REGISTRY}" latest
+          echo "::endgroup::"
+
+      - name: update tags for splice dars (devnet)
+        env:
+#          VERSION: ${{ needs.get-devnet-versions.outputs.splice-version }}
+          VERSION: ${{ needs.get-mainnet-versions.outputs.splice-version }}
+          TAG: "devnet"
+          BASE_REPO: "europe-docker.pkg.dev/da-images/playground/dars"
+        run: |
+          ./upload-and-tag-dars.sh
+          ./list_dars_by_tag.sh
+
+      - name: update tags for splice dars (testnet)
+        env:
+          VERSION: ${{ needs.get-testnet-versions.outputs.splice-version }}
+          TAG: "testnet"
+          BASE_REPO: "europe-docker.pkg.dev/da-images/playground/dars"
+        run: |
+          ./upload-and-tag-dars.sh
+          ./list_dars_by_tag.sh
+
+      - name: update tags for splice dars (mainnet)
+        env:
+          VERSION: ${{ needs.get-mainnet-versions.outputs.splice-version }}
+          TAG: "mainnet"
+          BASE_REPO: "europe-docker.pkg.dev/da-images/playground/dars"
+        run: |
+          ./upload-and-tag-dars.sh
+          ./list_dars_by_tag.sh
