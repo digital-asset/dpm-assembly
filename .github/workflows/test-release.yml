@@ -62,7 +62,7 @@ jobs:
           registry: ${{ inputs.registry }}
 
   test-bundle-windows:
-    runs-on: windows-2022
+    runs-on: windows-2025-vs2026
     timeout-minutes: 60
     env:
       ORAS_VERSION: 1.3.0
