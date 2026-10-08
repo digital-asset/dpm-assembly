@@ -1,0 +1,40 @@
+# 3.6 release
+edition: open-source
+version: 3.6.0
+components:
+  canton-open-source:
+    version: 3.6.1
+  codegen:
+    version: 3.6.2
+  daml-new:
+    version: 3.6.2
+    platforms:
+      - linux/amd64
+      - linux/arm64
+      - darwin/amd64
+      - darwin/arm64
+      - windows/amd64
+  daml-shell:
+    version: 3.6.0
+  daml-script:
+    version: 3.6.2
+  damlc:
+    version: 3.6.2
+    platforms:
+      - linux/amd64
+      - linux/arm64
+      - darwin/amd64
+      - darwin/arm64
+      - windows/amd64
+  scribe:
+    version: 3.6.0
+  upgrade-check:
+    version: 3.6.2
+assistant:
+  version: 1.0.22
+  platforms:
+    - windows/amd64
+    - linux/amd64
+    - linux/arm64
+    - darwin/amd64
+    - darwin/arm64
