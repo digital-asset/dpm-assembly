@@ -27,7 +27,7 @@ function list_versions() (
   DPM_EDITION="$1" dpm versions
 )
 
-release_line="latest/open-source/3.5.yaml"
+release_line="latest/open-source/3.6.yaml"
 edition="$(yq e .edition ${release_line})"
 version="${VERSION:-}"
 

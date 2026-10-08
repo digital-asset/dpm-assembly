@@ -37,7 +37,7 @@ components:
 For an `open-source` SDK release, the release is triggered by a human with pinned versions for all components. (The components that go in a given SDK release must have had already been previously published to `public`)
 
 The process is:
-- submit a PR containing changes to [latest/open-source/3.5.yaml](latest/open-source/3.5.yaml) add the `Standard Change` label onto the PR
+- submit a PR containing changes to [latest/open-source/3.6.yaml](latest/open-source/3.6.yaml) add the `Standard Change` label onto the PR
 
 Once approved and merged into `main`, a CI process will automatically:
 - publish dpm-sdk tarball(s)
