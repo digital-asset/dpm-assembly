@@ -16,7 +16,7 @@ concurrency:
 
 env:
   READ_REGISTRY: 'europe-docker.pkg.dev/da-images/public-unstable'
-  READ_GHCR_REGISTRY_DPM: 'ghcr.io/digital-asset/temp/temp'
+  READ_GHCR_REGISTRY_DPM: 'ghcr.io/digital-asset/temp'
   REGISTRY: 'europe-docker.pkg.dev/da-images/public-unstable'
   PROJECT: 'da-images'
   BUCKET: 'da-images-public-unstable'
