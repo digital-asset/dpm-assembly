@@ -134,9 +134,7 @@ jobs:
       - name: update tags for canton (mainnet)
         uses: ./.github/actions/update-tags
         with:
-          # snapshot docker images cannot be marked as mainnet
-          # artifacts: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
-          artifacts: '["components/canton-open-source"]'
+          artifacts: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
           version: ${{ needs.get-mainnet-versions.outputs.canton-version }}
           tags: '["mainnet"]'
           registry: ${{ env.REGISTRY }}
