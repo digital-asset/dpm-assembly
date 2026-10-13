@@ -134,9 +134,111 @@ jobs:
       - name: update tags for canton (mainnet)
         uses: ./.github/actions/update-tags
         with:
-          # snapshot docker images cannot be marked as mainnet
-          # artifacts: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
-          artifacts: '["components/canton-open-source"]'
+          artifacts: '["components/canton-open-source","docker/canton-base","docker/canton-mediator","docker/canton-sequencer","docker/canton-participant"]'
           version: ${{ needs.get-mainnet-versions.outputs.canton-version }}
           tags: '["mainnet"]'
+          registry: ${{ env.REGISTRY }}
+
+      # DPM
+      - name: update tags for dpm (all)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["components/dpm"]'
+          version: 1.0.22
+          tags: '["latest","devnet","testnet","mainnet"]'
+          registry: ${{ env.REGISTRY }}
+
+      # SDK bundle / docker
+      - name: update tags for sdk (devnet)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
+          version: 3.6.0
+          tags: '["latest","3.6","devnet"]'
+          registry: ${{ env.REGISTRY }}
+
+      - name: update tags for sdk (testnet)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
+          version: 3.6.0
+          tags: '["testnet"]'
+          registry: ${{ env.REGISTRY }}
+
+      - name: update tags for sdk (mainnet)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
+          version: 3.5.12
+          tags: '["mainnet"]'
+          registry: ${{ env.REGISTRY }}
+
+      # PQS
+      - name: update tags for pqs (3.6)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["components/scribe", "docker/participant-query-store", "docker/scribe", "charts/participant-query-store"]'
+          version: 3.6.0
+          tags: '["3.6","devnet","testnet"]'
+          registry: ${{ env.REGISTRY }}
+
+      - name: update tags for pqs (3.5)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["components/scribe", "docker/participant-query-store", "docker/scribe", "charts/participant-query-store"]'
+          version: 3.5.8
+          tags: '["3.5","mainnet"]'
+          registry: ${{ env.REGISTRY }}
+
+      # Daml Shell
+      - name: update tags for daml-shell (3.5)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["components/daml-shell","docker/daml-shell"]'
+          version: 3.5.1
+          tags: '["3.5","mainnet"]'
+          registry: ${{ env.REGISTRY }}
+
+      # Daml Shell
+      - name: update tags for daml-shell (3.6)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["components/daml-shell","docker/daml-shell"]'
+          version: 3.6.0
+          tags: '["3.6","devnet","testnet"]'
+          registry: ${{ env.REGISTRY }}
+
+      # damlc
+      - name: update tags for damlc (3.5)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["components/damlc", "components/upgrade-check", "components/daml-script", "components/daml-new", "components/codegen"]'
+          version: 3.5.2
+          tags: '["3.5","mainnet"]'
+          registry: ${{ env.REGISTRY }}
+
+      - name: update tags for damlc (3.6)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["components/damlc", "components/upgrade-check", "components/daml-script", "components/daml-new", "components/codegen"]'
+          version: 3.6.2
+          tags: '["3.6","devnet","testnet"]'
+          registry: ${{ env.REGISTRY }}
+
+      # darsyncer
+      - name: update tags for darsyncer (all)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["docker/darsyncer"]'
+          version: 2.9.7
+          tags: '["devnet","testnet","mainnet"]'
+          registry: ${{ env.REGISTRY }}
+
+      # covalidation service
+      - name: update tags for covalidation service (all)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["docker/covalidation-service"]'
+          version: 0.8.3
+          tags: '["latest","devnet","testnet","mainnet"]'
           registry: ${{ env.REGISTRY }}
