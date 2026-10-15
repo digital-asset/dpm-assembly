@@ -34,9 +34,9 @@ daml_version=$(cat $tmpdir/linked-daml-version)
 rm -rf $tmpdir
 
 dpm_version=$(resolve_tag dpm:main)
-# Shell isn't publishing 3.6 yet
+# Shell isn't publishing 3.6/3.7 yet
 shell_version=$(resolve_tag daml-shell:3.5)
-scribe_version=$(resolve_tag scribe:3.6)
+scribe_version=$(resolve_tag scribe:$release_line_minor)
 
 DPM_VERSION=$dpm_version yq e -i '.assistant.version = env(DPM_VERSION)' $release_line
 
