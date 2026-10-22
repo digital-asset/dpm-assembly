@@ -178,7 +178,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["components/scribe", "docker/participant-query-store", "docker/scribe", "charts/participant-query-store"]'
-          version: 3.6.1
+          version: 3.6.2
           tags: '["3.6","devnet","testnet","mainnet"]'
           registry: ${{ env.REGISTRY }}
 
