@@ -3,6 +3,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 export DPM_SDK_VERSION=${VERSION}
+# Canton detects when running in CI via the `CI` env var, and refuses to select a PV without the following env var
+export CANTON_AUTOMATIC_PROTOCOL_VERSION=1
 bats_require_minimum_version 1.5.0
 
 @test "dpm version | works correctly" {
