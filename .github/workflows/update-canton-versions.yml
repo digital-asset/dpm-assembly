@@ -187,8 +187,16 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["components/daml-shell","docker/daml-shell"]'
+          version: 3.6.1
+          tags: '["3.6","devnet"]'
+          registry: ${{ env.REGISTRY }}
+
+      - name: update tags for daml-shell (3.6)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["components/daml-shell","docker/daml-shell"]'
           version: 3.6.0
-          tags: '["3.6","devnet","testnet","mainnet"]'
+          tags: '["testnet","mainnet"]'
           registry: ${{ env.REGISTRY }}
 
       # damlc
