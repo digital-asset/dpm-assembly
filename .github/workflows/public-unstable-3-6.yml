@@ -44,7 +44,7 @@ jobs:
         with:
           token_format: access_token
           workload_identity_provider: projects/794775982379/locations/global/workloadIdentityPools/github-actions/providers/da-provider
-          service_account: gh-da-dpm-ass@da-images.iam.gserviceaccount.com
+          service_account: gh-da-dpmass@da-images.iam.gserviceaccount.com
       - name: Login to GAR
         uses: docker/login-action@81c6f93d4bc991e510b342a00b419b3bb4efc5c6 #v4.7.0
         with:
@@ -75,7 +75,7 @@ jobs:
         with:
           token_format: access_token
           workload_identity_provider: projects/794775982379/locations/global/workloadIdentityPools/github-actions/providers/da-provider
-          service_account: gh-da-dpm-ass@da-images.iam.gserviceaccount.com
+          service_account: gh-da-dpmass@da-images.iam.gserviceaccount.com
       - name: Login to GAR
         uses: docker/login-action@81c6f93d4bc991e510b342a00b419b3bb4efc5c6 #v4.7.0
         with:
@@ -118,7 +118,7 @@ jobs:
         with:
           token_format: access_token
           workload_identity_provider: projects/794775982379/locations/global/workloadIdentityPools/github-actions/providers/da-provider
-          service_account: gh-da-dpm-ass@da-images.iam.gserviceaccount.com
+          service_account: gh-da-dpmass@da-images.iam.gserviceaccount.com
       - name: Login to GAR
         uses: docker/login-action@81c6f93d4bc991e510b342a00b419b3bb4efc5c6 #v4.7.0
         with:
