@@ -42,7 +42,7 @@ jobs:
         uses: ./.github/actions/versions
       - uses: ./.github/actions/release-unstable
         with:
-          manifest: "latest/unstable/3.6.yaml"
+          manifest: "latest/unstable/3.7.yaml"
           extra-tags: --extra-tags="${{ github.ref_name }}"
           
   docker:
