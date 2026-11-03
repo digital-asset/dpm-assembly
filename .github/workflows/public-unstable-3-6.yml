@@ -49,7 +49,7 @@ jobs:
           service_account: gh-da-dpmass@da-images.iam.gserviceaccount.com
 
       - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v3'
+        uses: 'google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db' #v3.1
 
       - name: Login to GAR
         # https://github.com/docker/login-action/tree/v4
@@ -88,7 +88,7 @@ jobs:
           service_account: gh-da-dpmass@da-images.iam.gserviceaccount.com
 
       - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v3'
+        uses: 'google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db' #v3.1
 
       - name: Login to GAR
         # https://github.com/docker/login-action/tree/v4
@@ -137,7 +137,7 @@ jobs:
           service_account: gh-da-dpmass@da-images.iam.gserviceaccount.com
 
       - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v3'
+        uses: 'google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db' #v3.1
 
       - name: Login to GAR
         # https://github.com/docker/login-action/tree/v4
