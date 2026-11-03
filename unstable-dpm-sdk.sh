@@ -145,6 +145,8 @@ fi
 function upload_bundles() {
   for f in "${bundles_dir}"/*.{tar.gz,exe,zip}
   do
+    gcloud auth list
+    gcloud config list
     gcloud storage cp "${f}" "gs://${BUCKET}/unstable/install/dpm-sdk/"
     gcloud artifacts generic upload \
       --project=${PROJECT} \
