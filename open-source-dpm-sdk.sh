@@ -115,7 +115,7 @@ fi
 function upload_bundles() {
   for f in "${bundles_dir}"/*.{tar.gz,exe,zip}
   do
-    gsutil cp "${f}" "gs://${BUCKET}/install/dpm-sdk/"
+    gcloud storage cp "${f}" "gs://${BUCKET}/install/dpm-sdk/"
     gcloud artifacts generic upload \
       --project=${PROJECT} \
       --location=europe \
@@ -174,12 +174,12 @@ generate_windows_latest_archive > "${tmpdir}/latest-windows-archive.html"
 echo "${version}" > "${tmpdir}/latest" 
 
 # /install/ prefix in bucket is required by infra for proper routing and perms mapping
-gsutil cp "${tmpdir}"/install.sh "gs://${BUCKET}/install/"
-gsutil cp "${tmpdir}"/latest-windows.html "gs://${BUCKET}/install/"
-gsutil cp "${tmpdir}"/latest-windows-archive.html "gs://${BUCKET}/install/"
-gsutil cp "${tmpdir}"/latest "gs://${BUCKET}/install/"
+gcloud storage cp "${tmpdir}"/install.sh "gs://${BUCKET}/install/"
+gcloud storage cp "${tmpdir}"/latest-windows.html "gs://${BUCKET}/install/"
+gcloud storage cp "${tmpdir}"/latest-windows-archive.html "gs://${BUCKET}/install/"
+gcloud storage cp "${tmpdir}"/latest "gs://${BUCKET}/install/"
 
 # copy 404.html to bucket
-gsutil cp ./404.html "gs://${BUCKET}/"
+gcloud storage cp ./404.html "gs://${BUCKET}/"
 
 wait_for_latest "$(curl https://"${DOMAIN}"/install/latest)"
