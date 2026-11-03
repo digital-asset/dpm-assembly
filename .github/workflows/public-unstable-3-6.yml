@@ -48,6 +48,9 @@ jobs:
           workload_identity_provider: projects/794775982379/locations/global/workloadIdentityPools/github-actions/providers/da-provider
           service_account: gh-da-dpmass@da-images.iam.gserviceaccount.com
 
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v3'
+
       - name: Login to GAR
         # https://github.com/docker/login-action/tree/v4
         uses: docker/login-action@81c6f93d4bc991e510b342a00b419b3bb4efc5c6
@@ -83,6 +86,9 @@ jobs:
           token_format: access_token
           workload_identity_provider: projects/794775982379/locations/global/workloadIdentityPools/github-actions/providers/da-provider
           service_account: gh-da-dpmass@da-images.iam.gserviceaccount.com
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v3'
 
       - name: Login to GAR
         # https://github.com/docker/login-action/tree/v4
@@ -129,6 +135,9 @@ jobs:
           token_format: access_token
           workload_identity_provider: projects/794775982379/locations/global/workloadIdentityPools/github-actions/providers/da-provider
           service_account: gh-da-dpmass@da-images.iam.gserviceaccount.com
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v3'
 
       - name: Login to GAR
         # https://github.com/docker/login-action/tree/v4
