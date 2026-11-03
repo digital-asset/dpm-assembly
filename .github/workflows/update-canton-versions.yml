@@ -153,7 +153,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
-          version: 3.6.4
+          version: 3.7.0
           tags: '["latest","3.6","devnet"]'
           registry: ${{ env.REGISTRY }}
 
@@ -161,7 +161,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
-          version: 3.6.3
+          version: 3.6.4
           tags: '["testnet"]'
           registry: ${{ env.REGISTRY }}
 
