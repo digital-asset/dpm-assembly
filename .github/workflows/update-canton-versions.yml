@@ -144,7 +144,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["components/dpm"]'
-          version: 1.0.22
+          version: 1.1.0
           tags: '["latest","devnet","testnet","mainnet"]'
           registry: ${{ env.REGISTRY }}
 
@@ -154,7 +154,7 @@ jobs:
         with:
           artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
           version: 3.7.0
-          tags: '["latest","3.6","devnet"]'
+          tags: '["latest","3.7","devnet"]'
           registry: ${{ env.REGISTRY }}
 
       - name: update tags for sdk (testnet)
@@ -162,7 +162,7 @@ jobs:
         with:
           artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
           version: 3.6.4
-          tags: '["testnet"]'
+          tags: '["3.6", "testnet"]'
           registry: ${{ env.REGISTRY }}
 
       - name: update tags for sdk (mainnet)
@@ -174,38 +174,54 @@ jobs:
           registry: ${{ env.REGISTRY }}
 
       # PQS
+      - name: update tags for pqs (3.7)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["components/scribe", "docker/participant-query-store", "docker/scribe", "charts/participant-query-store"]'
+          version: 3.7.0
+          tags: '["3.7","devnet"]'
+          registry: ${{ env.REGISTRY }}
+
       - name: update tags for pqs (3.6)
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["components/scribe", "docker/participant-query-store", "docker/scribe", "charts/participant-query-store"]'
           version: 3.6.2
-          tags: '["3.6","devnet","testnet","mainnet"]'
+          tags: '["3.6","testnet","mainnet"]'
           registry: ${{ env.REGISTRY }}
 
       # Daml Shell
+      - name: update tags for daml-shell (3.7)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["components/daml-shell","docker/daml-shell"]'
+          version: 3.7.0
+          tags: '["3.7","devnet"]'
+          registry: ${{ env.REGISTRY }}
+
       - name: update tags for daml-shell (3.6)
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["components/daml-shell","docker/daml-shell"]'
           version: 3.6.1
-          tags: '["3.6","devnet"]'
-          registry: ${{ env.REGISTRY }}
-
-      - name: update tags for daml-shell (3.6)
-        uses: ./.github/actions/update-tags
-        with:
-          artifacts: '["components/daml-shell","docker/daml-shell"]'
-          version: 3.6.0
-          tags: '["testnet","mainnet"]'
+          tags: '["3.6","testnet","mainnet"]'
           registry: ${{ env.REGISTRY }}
 
       # damlc
+      - name: update tags for damlc (3.7)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["components/damlc", "components/upgrade-check", "components/daml-script", "components/daml-new", "components/codegen"]'
+          version: 3.7.0
+          tags: '["3.7","devnet"]'
+          registry: ${{ env.REGISTRY }}
+
       - name: update tags for damlc (3.6)
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["components/damlc", "components/upgrade-check", "components/daml-script", "components/daml-new", "components/codegen"]'
           version: 3.6.2
-          tags: '["3.6","devnet","testnet","mainnet"]'
+          tags: '["3.6","testnet","mainnet"]'
           registry: ${{ env.REGISTRY }}
 
       # darsyncer
@@ -213,7 +229,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["docker/darsyncer"]'
-          version: 2.9.9
+          version: 2.10.0
           tags: '["devnet","testnet","mainnet"]'
           registry: ${{ env.REGISTRY }}
 
@@ -223,5 +239,13 @@ jobs:
         with:
           artifacts: '["docker/covalidation-service"]'
           version: 0.9.0
-          tags: '["latest","devnet","testnet","mainnet"]'
+          tags: '["devnet","testnet","mainnet"]'
+          registry: ${{ env.REGISTRY }}
+
+      - name: update tags for covalidation service (all)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["docker/covalidation-service"]'
+          version: 0.11.0
+          tags: '["latest"]'
           registry: ${{ env.REGISTRY }}
