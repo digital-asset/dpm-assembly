@@ -1,9 +1,9 @@
 # 3.7 release
 edition: open-source
-version: 3.7.0
+version: 3.7.1
 components:
   canton-open-source:
-    version: 3.7.0
+    version: 3.7.1
   codegen:
     version: 3.7.0
   daml-new:
