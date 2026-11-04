@@ -204,7 +204,7 @@ jobs:
         with:
           artifacts: '["components/daml-shell","docker/daml-shell"]'
           version: 3.6.1
-          tags: '["testnet","mainnet"]'
+          tags: '["3.6","testnet","mainnet"]'
           registry: ${{ env.REGISTRY }}
 
       # damlc
@@ -240,4 +240,20 @@ jobs:
           artifacts: '["docker/covalidation-service"]'
           version: 0.9.0
           tags: '["devnet","testnet","mainnet"]'
+          registry: ${{ env.REGISTRY }}
+
+      - name: update tags for covalidation service (all)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["docker/covalidation-service"]'
+          version: 0.9.0
+          tags: '["devnet","testnet","mainnet"]'
+          registry: ${{ env.REGISTRY }}
+
+      - name: update tags for covalidation service (all)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["docker/covalidation-service"]'
+          version: 0.11.0
+          tags: '["latest"]'
           registry: ${{ env.REGISTRY }}
