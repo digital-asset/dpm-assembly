@@ -170,7 +170,7 @@ jobs:
         run: |
           echo "Determining latest SDK tarball link..."
 
-          ZIP_URL="$(curl -s https://get.digitalasset.com/unstable/install/latest-windows-archive.html | grep -oE 'https://[^ ]+\.zip')"
+          ZIP_URL="https://get.digitalasset.com/unstable/install/dpm-sdk/dpm-${{ needs.oci-bundle.outputs.unstable_version }}-windows-amd64.zip"
           ZIP_PATH="${RUNNER_TEMP}/dpm-windows-amd64.zip"
 
           if [ -z "${ZIP_URL}" ] ; then
