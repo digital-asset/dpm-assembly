@@ -208,7 +208,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
 
       # damlc
-      - name: update tags for damlc (3.6)
+      - name: update tags for damlc (3.7)
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["components/damlc", "components/upgrade-check", "components/daml-script", "components/daml-new", "components/codegen"]'
@@ -221,7 +221,7 @@ jobs:
         with:
           artifacts: '["components/damlc", "components/upgrade-check", "components/daml-script", "components/daml-new", "components/codegen"]'
           version: 3.6.2
-          tags: '["3.6","devnet","testnet","mainnet"]'
+          tags: '["3.6","testnet","mainnet"]'
           registry: ${{ env.REGISTRY }}
 
       # darsyncer
