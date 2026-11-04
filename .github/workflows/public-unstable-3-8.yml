@@ -1,0 +1,236 @@
+name: public-unstable-3-8
+
+on:
+  push:
+
+  schedule:
+    - cron: "0 10 * * 1-5"
+
+defaults:
+  run:
+    shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail {0}"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  READ_REGISTRY: 'europe-docker.pkg.dev/da-images/public-unstable'
+  READ_GHCR_REGISTRY_DPM: 'ghcr.io/digital-asset/temp'
+  REGISTRY: 'europe-docker.pkg.dev/da-images/public-unstable'
+  PROJECT: 'da-images'
+  BUCKET: 'da-images-public-unstable'
+  DOMAIN: 'get.digitalasset.com'
+
+jobs:
+  oci-bundle:
+    runs-on: digital-asset-dpm-assembly
+    outputs: 
+      unstable_version: ${{ steps.versions2.outputs.unstable }}
+      stable_version: ${{ steps.versions2.outputs.stable }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/nix
+      - uses: ./.github/actions/gcloud-login
+        with:
+          key: ${{ secrets.DA_IMAGES }}
+      - name: Versions
+        id: versions2
+        uses: ./.github/actions/versions
+      - uses: ./.github/actions/release-unstable
+        with:
+          manifest: "latest/unstable/3.8.yaml"
+          extra-tags: --extra-tags="${{ github.ref_name }}"
+          
+  docker:
+    runs-on: digital-asset-dpm-assembly
+    needs:
+      - oci-bundle
+    outputs:
+      unstable-tag: ${{ steps.versions.outputs.unstable }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Login to GAR
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: europe-docker.pkg.dev
+          username: _json_key
+          password: ${{ secrets.DA_IMAGES }}
+      - uses: ./.github/actions/nix
+
+      - name: Versions
+        id: versions
+        uses: ./.github/actions/versions
+
+      - name: Docker Tags
+        id: tags
+        uses:  ./.github/actions/docker-tags
+        with:
+          name: "sdk"
+
+      - name: Docker Build and Publish
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          push: true
+          build-args: VERSION=${{ steps.versions.outputs.unstable }}
+          tags: ${{ steps.tags.outputs.tags }}
+          platforms: linux/amd64,linux/arm64
+
+  docker-test:
+    runs-on: digital-asset-dpm-assembly
+    needs:
+      - docker
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/nix
+      - name: Login to GAR
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: europe-docker.pkg.dev
+          username: _json_key
+          password: ${{ secrets.DA_IMAGES }}
+
+
+      - name: Create temp writable directory
+        run: |
+          mkdir -p "$RUNNER_TEMP/my-temp-dir"
+          echo "Temp dir: $RUNNER_TEMP/my-temp-dir"
+
+      - name: Run Bats tests
+        id: run-tests
+        continue-on-error: true
+        env:
+          BATS_TEST_TIMEOUT: 300
+          VERSION: "${{ needs.docker.outputs.unstable-tag }}"
+        run: |
+          bats ./test/dpm-docker.bats --report-formatter junit --output "${RUNNER_TEMP}/my-temp-dir"
+
+      - name: Test Report
+        if: always() #always gather the test results even if the tests fail
+        uses: dorny/test-reporter@a43b3a5f7366b97d083190328d2c652e1a8b6aa2 # v3.0.0
+        with:
+          name: docker tests
+          path: ${{ runner.temp }}/my-temp-dir/*.xml
+          reporter: java-junit
+          fail-on-empty: 'true'
+          fail-on-error: 'false'
+
+      - name: Fail workflow if tests failed
+        if: steps.run-tests.outcome == 'failure'
+        run: exit 1
+        shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail $0" "{0}"
+
+  test-windows-archive-installation:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    needs:
+      - oci-bundle
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Create temp dir
+        run: |
+          RUNNER_TEMP_DIR="${RUNNER_TEMP}/dpm-home"
+          mkdir -p "${RUNNER_TEMP_DIR}"
+          echo "DPM_HOME=${RUNNER_TEMP_DIR}" >> "${GITHUB_ENV}"
+        shell: bash
+      - name: Create new non-admin user
+        run: |
+          net user foo p@ssw0rd /add
+
+          $pass = ConvertTo-SecureString "p@ssw0rd" -AsPlainText -Force
+          $cred = [pscredential]::new("foo", $pass)
+
+          ## This command should fail, validating that "foo" has no admin rights
+          $p = Start-Process `
+            -FilePath "cmd.exe" `
+            -ArgumentList "/c net session" `
+            -Credential $cred `
+            -NoNewWindow `
+            -Wait `
+            -PassThru
+
+          if ($p.ExitCode -eq 0) {
+            throw "user appears to have admin rights"
+          } else {
+            Write-Host "non-admin confirmed"
+          }
+        shell: powershell
+      - name: Download latest dpm windows archive
+        run: |
+          echo "Determining latest SDK tarball link..."
+
+          ZIP_URL="https://get.digitalasset.com/unstable/install/dpm-sdk/dpm-${{ needs.oci-bundle.outputs.unstable_version }}-windows-amd64.zip"
+          ZIP_PATH="${RUNNER_TEMP}/dpm-windows-amd64.zip"
+
+          if [ -z "${ZIP_URL}" ] ; then
+            echo "Failed to determine latest SDK download link."
+            exit 1
+          fi
+          echo "Latest SDK version tarball link is ${ZIP_URL}"
+
+          curl -o "${ZIP_PATH}" "${ZIP_URL}"
+        shell: bash
+      - name: Run bootstrap as non-admin user
+        shell: pwsh
+        run: |
+          $ZIP_PATH = "$env:RUNNER_TEMP/dpm-windows-amd64.zip"
+          $EXTRACTED = Join-Path "$env:RUNNER_TEMP" "extracted"
+          $exe = Join-Path $EXTRACTED "windows-amd64\bin\dpm.exe"
+
+          Expand-Archive -Path $ZIP_PATH -DestinationPath $EXTRACTED
+
+          $pass = ConvertTo-SecureString "p@ssw0rd" -AsPlainText -Force
+          $cred = [pscredential]::new("foo", $pass)
+          $argPath = Join-Path $EXTRACTED "windows-amd64"
+
+          $cmd = "set `"DPM_LOG_LEVEL=debug`" && set `"DPM_HOME=$env:DPM_HOME`" && set `"TMP=$env:DPM_HOME`" && `"$exe`" bootstrap `"$argPath`""
+
+          $p = Start-Process `
+            -FilePath "cmd.exe" `
+            -ArgumentList "/c $cmd" `
+            -Credential $cred `
+            -NoNewWindow `
+            -Wait `
+            -PassThru `
+            
+          if ($p.ExitCode -ne 0) { throw "exit code $($p.ExitCode)" }
+      - name: verify installation
+        shell: pwsh
+        run: |
+          $pass = ConvertTo-SecureString "p@ssw0rd" -AsPlainText -Force
+          $cred = [pscredential]::new("foo", $pass)
+
+          $exe = Join-Path $env:DPM_HOME "bin\dpm.cmd"
+
+          # This command should fail unless temp dir is overriden to one the user has perms to 
+          # (for writing the resolution file)
+          $cmd = "set `"DPM_LOG_LEVEL=debug`" && set `"DPM_HOME=$env:DPM_HOME`" && set `"TMP=$env:DPM_HOME`" && `"$exe`" --help"
+
+          $p = Start-Process `
+            -FilePath "cmd.exe" `
+            -ArgumentList "/c $cmd" `
+            -Credential $cred `
+            -NoNewWindow `
+            -Wait `
+            -PassThru `
+
+          if ($p.ExitCode -ne 0) { throw "exit code $($p.ExitCode)" }
+
+  test-release:
+    uses: ./.github/workflows/test-release.yml
+    needs:
+      - oci-bundle
+    with:
+      registry: europe-docker.pkg.dev/da-images/public-unstable
+      version-tag: ${{ needs.oci-bundle.outputs.stable_version }}
