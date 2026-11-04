@@ -246,14 +246,6 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["docker/covalidation-service"]'
-          version: 0.9.0
-          tags: '["devnet","testnet","mainnet"]'
-          registry: ${{ env.REGISTRY }}
-
-      - name: update tags for covalidation service (all)
-        uses: ./.github/actions/update-tags
-        with:
-          artifacts: '["docker/covalidation-service"]'
           version: 0.11.0
           tags: '["latest"]'
           registry: ${{ env.REGISTRY }}
