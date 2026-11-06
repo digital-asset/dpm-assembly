@@ -149,7 +149,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
 
       # SDK bundle / docker
-      - name: update tags for sdk (devnet)
+      - name: update tags for sdk (latest)
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
