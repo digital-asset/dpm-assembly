@@ -144,7 +144,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["components/dpm"]'
-          version: 1.1.0
+          version: 1.1.1
           tags: '["latest","devnet","testnet","mainnet"]'
           registry: ${{ env.REGISTRY }}
 
