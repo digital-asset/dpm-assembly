@@ -144,17 +144,25 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["components/dpm"]'
-          version: 1.1.0
+          version: 1.1.1
           tags: '["latest","devnet","testnet","mainnet"]'
           registry: ${{ env.REGISTRY }}
 
       # SDK bundle / docker
+      - name: update tags for sdk (latest)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
+          version: 3.7.2
+          tags: '["latest","3.7"]'
+          registry: ${{ env.REGISTRY }}
+
       - name: update tags for sdk (devnet)
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
           version: 3.7.1
-          tags: '["latest","3.7","devnet"]'
+          tags: '["devnet"]'
           registry: ${{ env.REGISTRY }}
 
       - name: update tags for sdk (testnet)
