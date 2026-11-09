@@ -6,7 +6,7 @@ description: Calculates the current stable and unstable versions
 
 inputs:
   version-tag:
-    description: Version override; defaults to the VERSION file
+    description: Version override
     required: true
 
 outputs:
