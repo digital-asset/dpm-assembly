@@ -78,4 +78,4 @@ jobs:
       - oci-bundle
     with:
       registry: europe-docker.pkg.dev/da-images/public-unstable
-      version-tag: ${{ needs.oci-bundle.outputs.version_tag }}
+      version-tag: "${{ needs.oci-bundle.outputs.version_tag }}"
