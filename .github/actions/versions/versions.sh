@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-version_file="${version-tag}"
+version_file="${VERSION:?VERSION environment variable is required}"
 
 function increment_patch_version() {( set -euo pipefail
     # parse the version string into major, minor, and patch components
