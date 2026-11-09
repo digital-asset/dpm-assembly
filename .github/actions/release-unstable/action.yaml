@@ -30,11 +30,16 @@ runs:
       shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail {0}"
     - run: echo "DPM_ASSEMBLY_RUN_NUMBER=${GITHUB_RUN_NUMBER}" >> "${GITHUB_ENV}"
       shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail {0}"
+    - name: parse version from manifest file
+      id: manifest-version
+      run: |
+        echo "version=$(yq e -e '.version' '${{ inputs.manifest }}')" >> "$GITHUB_OUTPUT"
+      shell: bash -euo pipefail -c "source nix.source && exec bash -euo pipefail {0}"
     - name: Versions
       id: versions
       uses: ./.github/actions/versions
       with:
-        version-tag: "$(yq e -e '.version' ${{ inputs.manifest }})"
+        version-tag: "${{ steps.manifest-version.outputs.version }}"
     - name: 'publish unstable dpm-sdk'
       id: publish-oci
       run: |

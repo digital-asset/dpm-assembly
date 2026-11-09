@@ -18,6 +18,7 @@ env:
   PROJECT: 'da-images'
   BUCKET: 'da-images-public'
   DOMAIN: 'get.digitalasset.com'
+  MANIFEST: 'latest/open-source/3.7.yaml'
 
 jobs:
   oci-bundle:
@@ -43,11 +44,15 @@ jobs:
           sudo apt update && sudo apt install -y nsis
           echo "::endgroup::"
       - run: echo "DPM_ASSEMBLY_RUN_NUMBER=${GITHUB_RUN_NUMBER}" >> "${GITHUB_ENV}"
+      - name: get version from manifest file
+        id: manifest-version
+        run: |
+          echo "version=$(yq e -e '.version' '${{ env.MANIFEST }}')" >> "$GITHUB_OUTPUT"
       - name: Versions
         id: versions
         uses: ./.github/actions/versions
         with:
-          version-tag: "$(yq e -e '.version' latest/open-source/3.7.yaml)"
+          version-tag: "${{ steps.manifest-version.outputs.version }}"
       - name: 'publish open source dpm-sdk'
         run:  |
           echo "::group::Starting bundle build and release"

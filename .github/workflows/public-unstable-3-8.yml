@@ -21,6 +21,7 @@ env:
   PROJECT: 'da-images'
   BUCKET: 'da-images-public-unstable'
   DOMAIN: 'get.digitalasset.com'
+  MANIFEST: 'latest/unstable/3.8.yaml'
 
 jobs:
   oci-bundle:
@@ -37,14 +38,18 @@ jobs:
       - uses: ./.github/actions/gcloud-login
         with:
           key: ${{ secrets.DA_IMAGES }}
+      - name: get version from manifest file
+        id: manifest-version
+        run: |
+          echo "version=$(yq e -e '.version' '${{ env.MANIFEST }}')" >> "$GITHUB_OUTPUT"
       - name: Versions
         id: versions2
         uses: ./.github/actions/versions
         with:
-          version-tag: "$(yq e -e '.version' latest/unstable/3.8.yaml)"
+          version-tag: "${{ steps.manifest-version.outputs.version }}"
       - uses: ./.github/actions/release-unstable
         with:
-          manifest: "latest/unstable/3.8.yaml"
+          manifest: "${{ env.MANIFEST }}"
           extra-tags: --extra-tags="${{ github.ref_name }}"
           
   docker:
