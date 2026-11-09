@@ -61,7 +61,7 @@ jobs:
       - name: 'test install via public domain'
         run: |
           echo "::group::Starting test installation"
-          ./test-open-source-install-script.sh
+          VERSION=${{ steps.versions.outputs.stable }} ./test-open-source-install-script.sh
           echo "::endgroup::"
       - name: Set up Git
         run: |
