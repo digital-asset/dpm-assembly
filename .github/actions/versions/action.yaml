@@ -4,6 +4,11 @@
 name: Versions
 description: Calculates the current stable and unstable versions
 
+inputs:
+  version-tag:
+    description: Version override; defaults to the VERSION file
+    required: true
+
 outputs:
   unstable:
     description: The unstable version
@@ -19,3 +24,5 @@ runs:
       shell: bash
       id: calc
       run: $GITHUB_ACTION_PATH/versions.sh
+      env:
+        VERSION: ${{ inputs.version-tag }}

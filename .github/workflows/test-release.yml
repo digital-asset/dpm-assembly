@@ -18,15 +18,11 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ./.github/actions/nix
-      - name: Uptick versions
-        run: |
-          version_tag="${{ inputs.version-tag }}"
-          if [ "$version_tag" != "" ]; then
-            echo "$version_tag" > VERSION
-          fi
       - name: Versions
         id: versions
         uses: ./.github/actions/versions
+        with:
+          version-tag: "${{ inputs.version-tag }}"
       - name: Test release
         uses: ./.github/actions/test-release
         with:
@@ -46,15 +42,11 @@ jobs:
         shell: bash
       - uses: cachix/install-nix-action@08dcb3a5e62fa31e2da3d490afc4176ef55ecd72 # v30
       - uses: ./.github/actions/nix
-      - name: Uptick versions
-        run: |
-          version_tag="${{ inputs.version-tag }}"
-          if [ "$version_tag" != "" ]; then
-            echo "$version_tag" > VERSION
-          fi
       - name: Versions
         id: versions
         uses: ./.github/actions/versions
+        with:
+          version-tag: "${{ inputs.version-tag }}"
       - name: Test release
         uses: ./.github/actions/test-release
         with:
@@ -130,16 +122,11 @@ jobs:
         shell: bash
         run: grpcurl --version
 
-      - name: Uptick versions
-        run: |
-          version_tag="${{ inputs.version-tag }}"
-          if [ "$version_tag" != "" ]; then
-            echo "$version_tag" > VERSION
-          fi
-        shell: bash
       - name: Versions
         id: versions
         uses: ./.github/actions/versions
+        with:
+          version-tag: "${{ inputs.version-tag }}"
       - name: Test release
         uses: ./.github/actions/test-release
         with:
