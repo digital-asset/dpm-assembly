@@ -141,6 +141,8 @@ then
   exit 1
 fi
 
+gcloud auth list
+
 gcloud config set storage/parallel_composite_upload_compatibility_check false
 gcloud config set storage/parallel_composite_upload_enabled true
 
