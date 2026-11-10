@@ -28,6 +28,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      id-token: write
     env:
       READ_REGISTRY: "europe-docker.pkg.dev/da-images/public-unstable"
       READ_GHCR_REGISTRY_DPM: "ghcr.io/digital-asset/temp"
