@@ -103,6 +103,7 @@ time dpm repo create-tarball \
   --oci-cache="${cache_dir}"
 
 rm -rf "${bundles_dir}/sdk-manifest.yaml" # not needed
+gcloud auth list
 for dir in "${bundles_dir}"/*/
 do
   dirname="$(basename "$dir")"
