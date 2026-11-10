@@ -113,6 +113,7 @@ then
 fi
 
 gcloud config set storage/parallel_composite_upload_compatibility_check false
+gcloud config set storage/parallel_composite_upload_enabled true
 
 function upload_bundles() {
   for f in "${bundles_dir}"/*.{tar.gz,exe,zip}
