@@ -1,4 +1,4 @@
-name: public-unstable-3-7
+name: public-unstable-3-8
 
 on:
   push:
@@ -21,6 +21,7 @@ env:
   PROJECT: 'da-images'
   BUCKET: 'da-images-public-unstable'
   DOMAIN: 'get.digitalasset.com'
+  MANIFEST: 'latest/unstable/3.8.yaml'
 
 jobs:
   oci-bundle:
@@ -37,12 +38,18 @@ jobs:
       - uses: ./.github/actions/gcloud-login
         with:
           key: ${{ secrets.DA_IMAGES }}
+      - name: get version from manifest file
+        id: manifest-version
+        run: |
+          echo "version=$(yq e -e '.version' '${{ env.MANIFEST }}')" >> "$GITHUB_OUTPUT"
       - name: Versions
         id: versions2
         uses: ./.github/actions/versions
+        with:
+          version-tag: "${{ steps.manifest-version.outputs.version }}"
       - uses: ./.github/actions/release-unstable
         with:
-          manifest: "latest/unstable/3.7.yaml"
+          manifest: "${{ env.MANIFEST }}"
           extra-tags: --extra-tags="${{ github.ref_name }}"
           
   docker:
@@ -64,15 +71,22 @@ jobs:
           password: ${{ secrets.DA_IMAGES }}
       - uses: ./.github/actions/nix
 
+      - name: get version from manifest file
+        id: manifest-version
+        run: |
+          echo "version=$(yq e -e '.version' '${{ env.MANIFEST }}')" >> "$GITHUB_OUTPUT"
       - name: Versions
         id: versions
         uses: ./.github/actions/versions
+        with:
+          version-tag: "${{ steps.manifest-version.outputs.version }}"
 
       - name: Docker Tags
         id: tags
         uses:  ./.github/actions/docker-tags
         with:
           name: "sdk"
+          version-tag: "${{ steps.manifest-version.outputs.version }}"
 
       - name: Docker Build and Publish
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
@@ -233,4 +247,4 @@ jobs:
       - oci-bundle
     with:
       registry: europe-docker.pkg.dev/da-images/public-unstable
-      version-tag: ${{ needs.oci-bundle.outputs.stable_version }}
+      version-tag: "${{ needs.oci-bundle.outputs.stable_version }}"

@@ -2,7 +2,7 @@
 # Copyright 2026 Copyright (c) 2026 Digital Asset (Switzerland) GmbH and/or its affiliates. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-version="${VERSION:-$(<"${BATS_TEST_DIRNAME}/../VERSION")}"
+version="${VERSION:?VERSION environment variable is required}"
 image_name="europe-docker.pkg.dev/da-images/public-all/docker/sdk:${version}"
 cmd="docker run --read-only --rm $image_name"
 cmd_with_mount="docker run --read-only --mount type=tmpfs,destination=/tmp,tmpfs-size=10M --rm $image_name"

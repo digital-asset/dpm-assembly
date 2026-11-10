@@ -10,6 +10,7 @@ export DPM_ASSEMBLY_RUN_NUMBER=${DPM_ASSEMBLY_RUN_NUMBER:-"0"}
 export DOMAIN=${DOMAIN:-"get.digitalasset-staging.com"}
 export PROJECT=${PROJECT:-"da-images-dev"}
 export BUCKET=${BUCKET:-"da-images-dev-public-unstable"}
+export MANIFEST=${MANIFEST:-"latest/open-source/3.7.yaml"}
 
 cache_dir="$(pwd)/oci-cache"
 
@@ -27,7 +28,7 @@ function list_versions() (
   DPM_EDITION="$1" dpm versions
 )
 
-release_line="latest/open-source/3.7.yaml"
+release_line="${MANIFEST}"
 edition="$(yq e .edition ${release_line})"
 version="${VERSION:-}"
 

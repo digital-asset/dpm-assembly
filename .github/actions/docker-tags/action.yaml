@@ -21,6 +21,9 @@ inputs:
     description: List of branch names considered for stable releases (space separated)
     default: main master release- release/
     required: false
+  version-tag:
+    description: Version override
+    required: true
 
 outputs:
   tags-unstable:
@@ -39,6 +42,8 @@ runs:
     - name: Versions
       id: versions
       uses: ./.github/actions/versions
+      with:
+        version-tag: ${{ inputs.version-tag }}
     - name: Calculate Tags
       env:
         NAME: ${{ inputs.name }}
