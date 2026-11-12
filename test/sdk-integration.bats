@@ -271,7 +271,6 @@ setup_project() {
 }
 
 @test "dpm codegen | generate js codegen and use it to connect to canton" {
-  skip "Skip test until codegen issue is resolved"
   setup_project
   dpm build --all
   cd main
