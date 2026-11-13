@@ -1,13 +1,13 @@
 # 3.7 release
 edition: open-source
-version: 3.7.1
+version: 3.7.2
 components:
   canton-open-source:
-    version: 3.7.1
+    version: 3.7.2
   codegen:
-    version: 3.7.0
+    version: 3.7.1
   daml-new:
-    version: 3.7.0
+    version: 3.7.1
     platforms:
       - linux/amd64
       - linux/arm64
@@ -17,9 +17,9 @@ components:
   daml-shell:
     version: 3.7.0
   daml-script:
-    version: 3.7.0
+    version: 3.7.1
   damlc:
-    version: 3.7.0
+    version: 3.7.1
     platforms:
       - linux/amd64
       - linux/arm64
@@ -27,11 +27,11 @@ components:
       - darwin/arm64
       - windows/amd64
   scribe:
-    version: 3.7.0
+    version: 3.7.1
   upgrade-check:
-    version: 3.7.0
+    version: 3.7.1
 assistant:
-  version: 1.1.0
+  version: 1.1.1
   platforms:
     - windows/amd64
     - linux/amd64
