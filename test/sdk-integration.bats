@@ -14,6 +14,7 @@ bats_require_minimum_version 1.5.0
   [ "$output" = "${VERSION}" ]
 }
 
+
 platform_pwd() {
   if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]];
   then
