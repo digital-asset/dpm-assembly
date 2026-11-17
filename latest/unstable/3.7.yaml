@@ -1,12 +1,12 @@
 edition: open-source
-version: 3.7.2-snapshot
+version: 3.7.3-snapshot
 components:
   canton-open-source:
     image-tag: 3.7
   codegen:
-    image-tag: 3.7
+    version: 3.7.0-adhoc.20261116.14889.0.v57ade3b1
   daml-new:
-    image-tag: 3.7
+    version: 3.7.0-adhoc.20261116.14889.0.v57ade3b1
     platforms:
       - linux/amd64
       - linux/arm64
@@ -14,9 +14,9 @@ components:
       - darwin/arm64
       - windows/amd64
   daml-script:
-    image-tag: 3.7
+    version: 3.7.0-adhoc.20261116.14889.0.v57ade3b1
   damlc:
-    image-tag: 3.7
+    version: 3.7.0-adhoc.20261116.14889.0.v57ade3b1
     platforms:
       - linux/amd64
       - linux/arm64
@@ -24,7 +24,7 @@ components:
       - darwin/arm64
       - windows/amd64
   upgrade-check:
-    image-tag: 3.7
+    version: 3.7.0-adhoc.20261116.14889.0.v57ade3b1
   daml-shell:
     image-tag: 3.7
   scribe:
