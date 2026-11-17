@@ -1,4 +1,4 @@
-name: public-unstable-3-8
+name: test-release
 
 on:
   workflow_call:
