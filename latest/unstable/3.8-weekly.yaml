@@ -4,9 +4,9 @@ components:
   canton-open-source:
     version: 3.8.0-snapshot.20261117.21321.0.v1d7ad103
   codegen:
-    version: 3.8.0-snapshot.20261104.14909.0.va65778bd
+    version: 3.8.0-adhoc.20261116.15354.0.v5c435453
   daml-new:
-    version: 3.8.0-snapshot.20261104.14909.0.va65778bd
+    version: 3.8.0-adhoc.20261116.15354.0.v5c435453
     platforms:
       - linux/amd64
       - linux/arm64
@@ -14,11 +14,11 @@ components:
       - darwin/arm64
       - windows/amd64
   daml-script:
-    version: 3.8.0-snapshot.20261104.14909.0.va65778bd
+    version: 3.8.0-adhoc.20261116.15354.0.v5c435453
   daml-shell:
     version: 3.8.0-snapshot.20261117.1.121.v8149a56
   damlc:
-    version: 3.8.0-snapshot.20261104.14909.0.va65778bd
+    version: 3.8.0-adhoc.20261116.15354.0.v5c435453
     platforms:
       - linux/amd64
       - linux/arm64
@@ -28,7 +28,7 @@ components:
   scribe:
     version: 3.8.0-snapshot.20261117.1.738.ved8f078
   upgrade-check:
-    version: 3.8.0-snapshot.20261104.14909.0.va65778bd
+    version: 3.8.0-adhoc.20261116.15354.0.v5c435453
 assistant: # dpm binary
   version: 1.1.2-snapshot-20261116.215.0.v547d3ca
   platforms:
