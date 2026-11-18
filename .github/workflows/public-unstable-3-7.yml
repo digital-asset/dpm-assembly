@@ -1,4 +1,4 @@
-name: public-unstable-3-8
+name: public-unstable-3-7
 
 on:
   push:
@@ -21,7 +21,7 @@ env:
   PROJECT: 'da-images'
   BUCKET: 'da-images-public-unstable'
   DOMAIN: 'get.digitalasset.com'
-  MANIFEST: 'latest/unstable/3.8.yaml'
+  MANIFEST: 'latest/unstable/3.7.yaml'
 
 permissions:
   contents: read

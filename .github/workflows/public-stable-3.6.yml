@@ -1,4 +1,4 @@
-name: public-stable
+name: public-stable-3-6
 
 on:
   push:

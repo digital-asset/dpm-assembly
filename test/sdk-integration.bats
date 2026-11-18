@@ -14,6 +14,7 @@ bats_require_minimum_version 1.5.0
   [ "$output" = "${VERSION}" ]
 }
 
+
 platform_pwd() {
   if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]];
   then
@@ -271,7 +272,6 @@ setup_project() {
 }
 
 @test "dpm codegen | generate js codegen and use it to connect to canton" {
-  skip "Skip test until codegen issue is resolved"
   setup_project
   dpm build --all
   cd main
