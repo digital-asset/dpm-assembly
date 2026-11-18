@@ -167,7 +167,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
-          version: 3.7.2
+          version: 3.7.3
           tags: '["latest","3.7","devnet"]'
           registry: ${{ env.REGISTRY }}
 
@@ -183,8 +183,8 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
-          version: 3.6.4
-          tags: '["3.6","mainnet"]'
+          version: 3.7.1
+          tags: '["mainnet"]'
           registry: ${{ env.REGISTRY }}
 
       # PQS
@@ -192,16 +192,8 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["components/scribe", "docker/participant-query-store", "docker/scribe", "charts/participant-query-store"]'
-          version: 3.7.1
-          tags: '["3.7","devnet","testnet"]'
-          registry: ${{ env.REGISTRY }}
-
-      - name: update tags for pqs (3.6)
-        uses: ./.github/actions/update-tags
-        with:
-          artifacts: '["components/scribe", "docker/participant-query-store", "docker/scribe", "charts/participant-query-store"]'
-          version: 3.6.3
-          tags: '["3.6","mainnet"]'
+          version: 3.7.2
+          tags: '["3.7","devnet","testnet","mainnet"]'
           registry: ${{ env.REGISTRY }}
 
       # Daml Shell
@@ -210,15 +202,7 @@ jobs:
         with:
           artifacts: '["components/daml-shell","docker/daml-shell"]'
           version: 3.7.0
-          tags: '["3.7","devnet","testnet"]'
-          registry: ${{ env.REGISTRY }}
-
-      - name: update tags for daml-shell (3.6)
-        uses: ./.github/actions/update-tags
-        with:
-          artifacts: '["components/daml-shell","docker/daml-shell"]'
-          version: 3.6.1
-          tags: '["3.6","mainnet"]'
+          tags: '["3.7","devnet","testnet","mainnet"]'
           registry: ${{ env.REGISTRY }}
 
       # damlc
@@ -226,16 +210,16 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["components/damlc", "components/upgrade-check", "components/daml-script", "components/daml-new", "components/codegen"]'
-          version: 3.7.1
-          tags: '["3.7","devnet","testnet"]'
+          version: 3.7.3
+          tags: '["3.7","devnet"]'
           registry: ${{ env.REGISTRY }}
 
       - name: update tags for damlc (3.6)
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["components/damlc", "components/upgrade-check", "components/daml-script", "components/daml-new", "components/codegen"]'
-          version: 3.6.2
-          tags: '["3.6","mainnet"]'
+          version: 3.7.1
+          tags: '["testnet","mainnet"]'
           registry: ${{ env.REGISTRY }}
 
       # darsyncer
@@ -252,7 +236,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["docker/covalidation-service"]'
-          version: 0.9.0
+          version: 0.11.1
           tags: '["mainnet"]'
           registry: ${{ env.REGISTRY }}
 
@@ -260,6 +244,6 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["docker/covalidation-service"]'
-          version: 0.11.0
+          version: 0.11.1
           tags: '["latest", "devnet","testnet"]'
           registry: ${{ env.REGISTRY }}
