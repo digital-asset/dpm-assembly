@@ -27,7 +27,7 @@ components:
       - darwin/arm64
       - windows/amd64
   scribe:
-    version: 3.7.1
+    version: 3.7.2
   upgrade-check:
     version: 3.7.3
 assistant:
