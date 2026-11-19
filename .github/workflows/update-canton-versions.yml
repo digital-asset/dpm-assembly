@@ -158,7 +158,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["components/dpm"]'
-          version: 1.1.1
+          version: 1.1.2
           tags: '["latest","devnet","testnet","mainnet"]'
           registry: ${{ env.REGISTRY }}
 
@@ -167,8 +167,17 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
+          version: 3.7.4
+          tags: '["latest","3.7"]'
+          registry: ${{ env.REGISTRY }}
+
+      # SDK bundle / docker
+      - name: update tags for sdk (devnet)
+        uses: ./.github/actions/update-tags
+        with:
+          artifacts: '["sdk-manifests/open-source", "docker/sdk"]'
           version: 3.7.3
-          tags: '["latest","3.7","devnet"]'
+          tags: '["devnet"]'
           registry: ${{ env.REGISTRY }}
 
       - name: update tags for sdk (testnet)
@@ -214,7 +223,7 @@ jobs:
           tags: '["3.7","devnet"]'
           registry: ${{ env.REGISTRY }}
 
-      - name: update tags for damlc (3.6)
+      - name: update tags for damlc (3.7) (testnet/mainnet)
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["components/damlc", "components/upgrade-check", "components/daml-script", "components/daml-new", "components/codegen"]'
@@ -236,7 +245,7 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["docker/covalidation-service"]'
-          version: 0.11.1
+          version: 0.12.0
           tags: '["mainnet"]'
           registry: ${{ env.REGISTRY }}
 
@@ -244,6 +253,6 @@ jobs:
         uses: ./.github/actions/update-tags
         with:
           artifacts: '["docker/covalidation-service"]'
-          version: 0.11.1
+          version: 0.12.0
           tags: '["latest", "devnet","testnet"]'
           registry: ${{ env.REGISTRY }}
